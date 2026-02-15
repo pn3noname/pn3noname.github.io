@@ -138,14 +138,14 @@
             bottom: -4px;
             left: 0;
             width: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--blue) 0%, var(--purple) 100%);
+            height: 2px;
+            background: linear-gradient(90deg, var(--purple) 0%, var(--blue) 100%);
             transition: width 0.4s ease;
             border-radius: 2px;
         }
 
         .nav-links a:hover {
-            background: linear-gradient(90deg, var(--blue), var(--purple));
+            background: linear-gradient(90deg, var(--purple), var(--blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -215,7 +215,19 @@
         .currently-learning h3::before {
             content: '●';
             font-size: 0.8rem;
-            color: var(--orange);
+            color: #ef4444;
+            animation: livePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes livePulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.4;
+                transform: scale(0.9);
+            }
         }
 
         .learning-item {
@@ -665,7 +677,7 @@
                 <li><a href="#tags">Tags</a></li>
                 <li><a href="#resources">Resources</a></li>
                 <li><a href="#writeups">Writeups</a></li>
-                <li><a href="https://github.com/pn3noname" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                <li><a href="#about">About</a></li>
             </ul>
         </nav>
     </header>
