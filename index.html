@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pn3noname - Cybersecurity Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #f9f8f6;
+            --bg-secondary: #efebe5;
+            --bg-card: #ffffff;
+            --text-primary: #2d2d2d;
+            --text-secondary: #626262;
+            --accent: #a0695f;
+            --accent-light: #b57d73;
+            --border: #e3dfd8;
+            --shadow: rgba(160, 105, 95, 0.11);
+            --success: #6b8b6b;
+            --highlight: #c18a7e;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            letter-spacing: -0.01em;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 35px;
+            vertical-align: middle;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-bottom: 5rem;
+            padding: 3rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            line-height: 1.2;
+            letter-spacing: -0.03em;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            line-height: 1.8;
+            font-weight: 400;
+        }
+
+        /* Section Headers */
+        .section-header {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-header h2 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: inline-block;
+            position: relative;
+            letter-spacing: -0.02em;
+        }
+
+        .badge {
+            background-color: var(--bg-secondary);
+            color: var(--accent);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 1rem;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        /* Card Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 5rem;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(160, 105, 95, 0.15);
+            border-color: var(--accent-light);
+        }
+
+        .card h3 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+            letter-spacing: -0.02em;
+        }
+
+        .card-meta {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.2rem;
+            font-weight: 400;
+        }
+
+        .card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .tag {
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.9rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .tag:hover {
+            background-color: var(--accent-light);
+            color: var(--bg-card);
+        }
+
+        .tag.ctf { 
+            background-color: rgba(107, 142, 78, 0.1);
+            color: var(--success);
+        }
+        .tag.web { 
+            background-color: rgba(160, 105, 95, 0.1);
+            color: var(--accent);
+        }
+        .tag.pwn { 
+            background-color: rgba(212, 163, 115, 0.15);
+            color: #c17a4a;
+        }
+        .tag.crypto { 
+            background-color: rgba(160, 105, 95, 0.08);
+            color: var(--accent-light);
+        }
+
+        /* Categories */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 5rem;
+        }
+
+        .category-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(160, 105, 95, 0.15);
+            border-color: var(--accent-light);
+        }
+
+        .category-icon {
+            font-size: 2.8rem;
+            margin-bottom: 1.2rem;
+            filter: grayscale(20%);
+        }
+
+        .category-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .category-count {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: 5rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        footer a:hover {
+            color: var(--accent-light);
+        }
+
+        footer p {
+            font-size: 0.95rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 1.5rem;
+                padding: 1.5rem 1rem;
+            }
+
+            .container {
+                padding: 3rem 1.5rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.65rem;
+            }
+        }
+
+        /* Subtle animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card, .category-card {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <img src="Blog_logo.svg" alt="pn3noname">
+            </a>
+            <ul class="nav-links">
+                <li><a href="#writeups">Writeups</a></li>
+                <li><a href="#categories">Categories</a></li>
+                <li><a href="#notes">Learning Notes</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="https://github.com/pn3noname" target="_blank">GitHub</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Cybersecurity Learning Journey</h1>
+            <p>Documenting and sharing my cybersecurity studies, including CTF challenges, security concepts, and vulnerability analysis. Building a community of learners and practitioners.</p>
+        </section>
+
+        <section id="writeups">
+            <div class="section-header">
+                <h2>Recent Writeups</h2>
+                <span class="badge">CTF</span>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>picoCTF 2024 - Web Exploitation</h3>
+                    <div class="card-meta">
+                        <span>📅 Feb 10, 2024</span>
+                        <span>⏱️ 5 min read</span>
+                    </div>
+                    <p>Authentication bypass using SQL Injection. Leveraging UNION-based attacks to enumerate database structure and gain administrative access.</p>
+                    <div class="tags">
+                        <span class="tag web">web</span>
+                        <span class="tag">sqli</span>
+                        <span class="tag ctf">ctf</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>HackTheBox - Buffer Overflow Challenge</h3>
+                    <div class="card-meta">
+                        <span>📅 Feb 8, 2024</span>
+                        <span>⏱️ 8 min read</span>
+                    </div>
+                    <p>Stack-based buffer overflow vulnerability analysis. Constructing ROP chains to bypass ASLR and DEP protections with step-by-step methodology.</p>
+                    <div class="tags">
+                        <span class="tag pwn">pwn</span>
+                        <span class="tag">bof</span>
+                        <span class="tag">rop</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>CryptoHack - RSA Challenges</h3>
+                    <div class="card-meta">
+                        <span>📅 Feb 5, 2024</span>
+                        <span>⏱️ 6 min read</span>
+                    </div>
+                    <p>RSA cryptanalysis using Small Public Exponent Attack and Wiener's Attack. Mathematical foundations and practical exploitation techniques.</p>
+                    <div class="tags">
+                        <span class="tag crypto">crypto</span>
+                        <span class="tag">rsa</span>
+                        <span class="tag">math</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="categories">
+            <div class="section-header">
+                <h2>Categories</h2>
+            </div>
+            <div class="categories">
+                <a href="#" class="category-card">
+                    <div class="category-icon">🌐</div>
+                    <h3>Web Security</h3>
+                    <p class="category-count">12 posts</p>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon">💻</div>
+                    <h3>Binary Exploitation</h3>
+                    <p class="category-count">8 posts</p>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon">🔐</div>
+                    <h3>Cryptography</h3>
+                    <p class="category-count">6 posts</p>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon">🔍</div>
+                    <h3>Forensics</h3>
+                    <p class="category-count">5 posts</p>
+                </a>
+            </div>
+        </section>
+
+        <section id="notes">
+            <div class="section-header">
+                <h2>Learning Notes</h2>
+                <span class="badge">Study</span>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Linux Privilege Escalation Techniques</h3>
+                    <div class="card-meta">
+                        <span>📅 Feb 12, 2024</span>
+                    </div>
+                    <p>Comprehensive guide to Linux privilege escalation methods including SUID exploitation, Cron abuse, and kernel exploits. Practical techniques for penetration testing engagements.</p>
+                    <div class="tags">
+                        <span class="tag">linux</span>
+                        <span class="tag">privilege-escalation</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>OWASP Top 10 2024 Summary</h3>
+                    <div class="card-meta">
+                        <span>📅 Feb 10, 2024</span>
+                    </div>
+                    <p>Latest OWASP Top 10 vulnerabilities with detailed explanations and hands-on examples. Building a strong foundation in web application security.</p>
+                    <div class="tags">
+                        <span class="tag web">web</span>
+                        <span class="tag">owasp</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 pn3noname | <a href="https://github.com/pn3noname/pn3noname.github.io">GitHub</a> | MIT License</p>
+        <p style="margin-top: 0.8rem; font-size: 0.9rem;">Built with ❤️ for the cybersecurity community</p>
+    </footer>
+</body>
+</html>
