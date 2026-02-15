@@ -33,15 +33,15 @@
             --accent-light: #a18976;
             --border: #d5cfc5;
             --shadow: rgba(139, 111, 92, 0.08);
-            --success: #27ae60;
-            --success-light: #2ecc71;
+            --success: #059669;
+            --success-light: #10b981;
             --highlight: #b39884;
-            --blue: #4a90e2;
-            --blue-light: #5b9bd5;
-            --orange: #e67e22;
-            --orange-light: #f39c12;
-            --purple: #8e44ad;
-            --purple-light: #9b59b6;
+            --blue: #68a0c8;
+            --blue-light: #84b3d4;
+            --orange: #c9885b;
+            --orange-light: #d49a6a;
+            --purple: #b56576;
+            --purple-light: #c67d8d;
         }
 
         body {
@@ -349,7 +349,7 @@
         }
 
         .badge.links {
-            background-color: var(--success);
+            background-color: #8a9a5b;
         }
 
         .badge.topics {
@@ -376,23 +376,40 @@
 
         .card:hover {
             transform: translateY(-4px);
+            backdrop-filter: blur(10px);
+            background-color: rgba(250, 250, 248, 0.7);
         }
 
         /* Section-specific card hover effects */
         #notes .card:hover {
-            box-shadow: 0 8px 24px rgba(74, 144, 226, 0.25);
+            box-shadow: 0 8px 32px rgba(104, 160, 200, 0.25),
+                        0 0 0 1px rgba(104, 160, 200, 0.2),
+                        inset 0 0 60px rgba(104, 160, 200, 0.05);
+            border-color: rgba(104, 160, 200, 0.3);
         }
 
         #tags .category-card:hover {
-            box-shadow: 0 8px 24px rgba(230, 126, 34, 0.25);
+            transform: translateY(-4px);
+            backdrop-filter: blur(10px);
+            background-color: rgba(250, 250, 248, 0.7);
+            box-shadow: 0 8px 32px rgba(201, 136, 91, 0.25),
+                        0 0 0 1px rgba(201, 136, 91, 0.2),
+                        inset 0 0 60px rgba(201, 136, 91, 0.05);
+            border-color: rgba(201, 136, 91, 0.3);
         }
 
         #resources .card:hover {
-            box-shadow: 0 8px 24px rgba(39, 174, 96, 0.25);
+            box-shadow: 0 8px 32px rgba(138, 154, 91, 0.25),
+                        0 0 0 1px rgba(138, 154, 91, 0.2),
+                        inset 0 0 60px rgba(138, 154, 91, 0.05);
+            border-color: rgba(138, 154, 91, 0.3);
         }
 
         #writeups .card:hover {
-            box-shadow: 0 8px 24px rgba(142, 68, 173, 0.25);
+            box-shadow: 0 8px 32px rgba(181, 101, 118, 0.25),
+                        0 0 0 1px rgba(181, 101, 118, 0.2),
+                        inset 0 0 60px rgba(181, 101, 118, 0.05);
+            border-color: rgba(181, 101, 118, 0.3);
         }
 
         .card h3 {
