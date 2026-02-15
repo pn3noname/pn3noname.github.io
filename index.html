@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+                   font-src 'self' https://fonts.gstatic.com; 
+                   img-src 'self' data:; 
+                   script-src 'self';">
     <title>pn3noname</title>
     <link rel="icon" type="image/svg+xml" href="Blog_favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -475,27 +483,176 @@
             </button>
             
             <ul class="nav-links" id="navLinks">
-                <li><a href="#writeups">Writeups</a></li>
-                <li><a href="#categories">Categories</a></li>
                 <li><a href="#notes">Learning Notes</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="https://github.com/pn3noname" target="_blank">GitHub</a></li>
+                <li><a href="#tags">Tags</a></li>
+                <li><a href="#resources">Resources</a></li>
+                <li><a href="#writeups">Writeups</a></li>
+                <li><a href="https://github.com/pn3noname" target="_blank" rel="noopener noreferrer">GitHub</a></li>
             </ul>
         </nav>
     </header>
 
     <main class="container">
         <section class="hero">
-            <h1>Cybersecurity Learning Journey</h1>
-            <p>Documenting and sharing my cybersecurity studies, including CTF challenges, security concepts, and vulnerability analysis. Building a community of learners and practitioners.</p>
+            <h1>Learning Cybersecurity</h1>
+            <p>Documenting my CTF solutions and security studies.</p>
         </section>
 
+        <section id="notes">
+            <div class="section-header">
+                <h2>Learning Notes</h2>
+                <span class="badge">Study</span>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Linux Privilege Escalation Techniques</h3>
+                    <div class="card-meta">
+                        <span>📅 Feb 12, 2024</span>
+                    </div>
+                    <p>Comprehensive guide to Linux privilege escalation methods including SUID exploitation, Cron abuse, and kernel exploits. Practical techniques for penetration testing engagements.</p>
+                    <div class="tags">
+                        <span class="tag">linux</span>
+                        <span class="tag">privilege-escalation</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>OWASP Top 10 2024 Summary</h3>
+                    <div class="card-meta">
+                        <span>📅 Feb 10, 2024</span>
+                    </div>
+                    <p>Latest OWASP Top 10 vulnerabilities with detailed explanations and hands-on examples. Building a strong foundation in web application security.</p>
+                    <div class="tags">
+                        <span class="tag web">web</span>
+                        <span class="tag">owasp</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tags">
+            <div class="section-header">
+                <h2>Tags</h2>
+            </div>
+            <div class="categories">
+                <a href="#" class="category-card">
+                    <div class="category-icon">🐧</div>
+                    <h3>Linux</h3>
+                    <p class="category-count">0 posts</p>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon">🌐</div>
+                    <h3>Network</h3>
+                    <p class="category-count">0 posts</p>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon">📊</div>
+                    <h3>Splunk</h3>
+                    <p class="category-count">0 posts</p>
+                </a>
+                <a href="#" class="category-card">
+                    <div class="category-icon">🦈</div>
+                    <h3>Wireshark</h3>
+                    <p class="category-count">0 posts</p>
+                </a>
+            </div>
+        </section>
+
+        <section id="resources">
+            <div class="section-header">
+                <h2>Resources</h2>
+                <span class="badge">Links</span>
+            </div>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>The Hacker News</h3>
+                    <div class="card-meta">
+                        <span>🔗 News</span>
+                        <span>🌐 <a href="https://thehackernews.com" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">thehackernews.com</a></span>
+                    </div>
+                    <p>Latest cybersecurity news, vulnerabilities, and data breaches. Essential reading for staying updated on current threats and security trends.</p>
+                    <div class="tags">
+                        <span class="tag">news</span>
+                        <span class="tag">security</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>HackTricks</h3>
+                    <div class="card-meta">
+                        <span>📚 Knowledge Base</span>
+                        <span>🌐 <a href="https://book.hacktricks.xyz" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">book.hacktricks.xyz</a></span>
+                    </div>
+                    <p>Comprehensive pentesting methodology and techniques guide. Covers everything from enumeration to privilege escalation across different platforms.</p>
+                    <div class="tags">
+                        <span class="tag">pentesting</span>
+                        <span class="tag">methodology</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>PortSwigger Web Security Academy</h3>
+                    <div class="card-meta">
+                        <span>🎓 Learning Platform</span>
+                        <span>🌐 <a href="https://portswigger.net/web-security" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">portswigger.net</a></span>
+                    </div>
+                    <p>Free interactive labs and learning materials for web application security. Created by the team behind Burp Suite with hands-on practice environments.</p>
+                    <div class="tags">
+                        <span class="tag web">web</span>
+                        <span class="tag">labs</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Krebs on Security</h3>
+                    <div class="card-meta">
+                        <span>✍️ Blog</span>
+                        <span>🌐 <a href="https://krebsonsecurity.com" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">krebsonsecurity.com</a></span>
+                    </div>
+                    <p>In-depth investigative journalism on cybercrime and security. Brian Krebs provides detailed analysis of breaches, scams, and security incidents.</p>
+                    <div class="tags">
+                        <span class="tag">blog</span>
+                        <span class="tag">cybercrime</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>MITRE ATT&CK Framework</h3>
+                    <div class="card-meta">
+                        <span>📋 Framework</span>
+                        <span>🌐 <a href="https://attack.mitre.org" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">attack.mitre.org</a></span>
+                    </div>
+                    <p>Global knowledge base of adversary tactics and techniques based on real-world observations. Essential for understanding threat actor behaviors.</p>
+                    <div class="tags">
+                        <span class="tag">framework</span>
+                        <span class="tag">threat-intelligence</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>GTFOBins</h3>
+                    <div class="card-meta">
+                        <span>🛠️ Reference</span>
+                        <span>🌐 <a href="https://gtfobins.github.io" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">gtfobins.github.io</a></span>
+                    </div>
+                    <p>Curated list of Unix binaries that can be used to bypass local security restrictions. Invaluable for privilege escalation scenarios.</p>
+                    <div class="tags">
+                        <span class="tag">linux</span>
+                        <span class="tag">privilege-escalation</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
         <section id="writeups">
             <div class="section-header">
                 <h2>Recent Writeups</h2>
                 <span class="badge">CTF</span>
             </div>
             <div class="card-grid">
+                <!-- Coming Soon - CTF writeups will be added here -->
+                
+                <!-- 
                 <div class="card">
                     <h3>picoCTF 2024 - Web Exploitation</h3>
                     <div class="card-meta">
@@ -537,66 +694,7 @@
                         <span class="tag">math</span>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="categories">
-            <div class="section-header">
-                <h2>Categories</h2>
-            </div>
-            <div class="categories">
-                <a href="#" class="category-card">
-                    <div class="category-icon">🌐</div>
-                    <h3>Web Security</h3>
-                    <p class="category-count">12 posts</p>
-                </a>
-                <a href="#" class="category-card">
-                    <div class="category-icon">💻</div>
-                    <h3>Binary Exploitation</h3>
-                    <p class="category-count">8 posts</p>
-                </a>
-                <a href="#" class="category-card">
-                    <div class="category-icon">🔐</div>
-                    <h3>Cryptography</h3>
-                    <p class="category-count">6 posts</p>
-                </a>
-                <a href="#" class="category-card">
-                    <div class="category-icon">🔍</div>
-                    <h3>Forensics</h3>
-                    <p class="category-count">5 posts</p>
-                </a>
-            </div>
-        </section>
-
-        <section id="notes">
-            <div class="section-header">
-                <h2>Learning Notes</h2>
-                <span class="badge">Study</span>
-            </div>
-            <div class="card-grid">
-                <div class="card">
-                    <h3>Linux Privilege Escalation Techniques</h3>
-                    <div class="card-meta">
-                        <span>📅 Feb 12, 2024</span>
-                    </div>
-                    <p>Comprehensive guide to Linux privilege escalation methods including SUID exploitation, Cron abuse, and kernel exploits. Practical techniques for penetration testing engagements.</p>
-                    <div class="tags">
-                        <span class="tag">linux</span>
-                        <span class="tag">privilege-escalation</span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>OWASP Top 10 2024 Summary</h3>
-                    <div class="card-meta">
-                        <span>📅 Feb 10, 2024</span>
-                    </div>
-                    <p>Latest OWASP Top 10 vulnerabilities with detailed explanations and hands-on examples. Building a strong foundation in web application security.</p>
-                    <div class="tags">
-                        <span class="tag web">web</span>
-                        <span class="tag">owasp</span>
-                    </div>
-                </div>
+                -->
             </div>
         </section>
     </main>
