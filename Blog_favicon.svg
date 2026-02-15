@@ -1,0 +1,30 @@
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <metadata>
+    <rdf:RDF>
+      <rdf:Description>
+        <dc:title>pn3noname Favicon</dc:title>
+        <dc:creator>pn3noname</dc:creator>
+        <dc:rights>© 2026 pn3noname. All rights reserved.</dc:rights>
+        <dc:date>2026-02-15</dc:date>
+        <dc:description>Official favicon for pn3noname cybersecurity blog</dc:description>
+        <dc:publisher>pn3noname</dc:publisher>
+        <dc:type>Favicon/Icon</dc:type>
+        <dc:format>image/svg+xml</dc:format>
+      </rdf:Description>
+    </rdf:RDF>
+  </metadata>
+  
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@700&amp;display=swap');
+    </style>
+  </defs>
+  
+  <!-- Terracotta background circle -->
+  <circle cx="32" cy="32" r="30" fill="#a0695f"/>
+  
+  <!-- > symbol in white -->
+  <text x="32" y="46" font-family="'Source Code Pro', monospace" font-size="40" font-weight="700" fill="#ffffff" text-anchor="middle">
+    &gt;
+  </text>
+</svg>
