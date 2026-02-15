@@ -124,7 +124,7 @@
         }
 
         .nav-links a {
-            color: #1a1a1a;
+            color: #2d2d2d;
             text-decoration: none;
             font-weight: 600;
             font-size: 0.95rem;
@@ -376,8 +376,23 @@
 
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(74, 144, 226, 0.2);
-            border-color: var(--blue-light);
+        }
+
+        /* Section-specific card hover effects */
+        #notes .card:hover {
+            box-shadow: 0 8px 24px rgba(74, 144, 226, 0.25);
+        }
+
+        #tags .category-card:hover {
+            box-shadow: 0 8px 24px rgba(230, 126, 34, 0.25);
+        }
+
+        #resources .card:hover {
+            box-shadow: 0 8px 24px rgba(39, 174, 96, 0.25);
+        }
+
+        #writeups .card:hover {
+            box-shadow: 0 8px 24px rgba(142, 68, 173, 0.25);
         }
 
         .card h3 {
@@ -472,8 +487,6 @@
 
         .category-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(142, 68, 173, 0.2);
-            border-color: var(--purple-light);
         }
 
         .category-icon {
@@ -806,7 +819,7 @@
         <section id="resources">
             <div class="section-header">
                 <h2>Resources</h2>
-                <span class="badge links">Links</span>
+                <span class="badge links">INFO</span>
             </div>
             <div class="card-grid">
                 <div class="card">
