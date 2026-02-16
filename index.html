@@ -10,7 +10,7 @@
                    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
                    font-src 'self' https://fonts.gstatic.com; 
                    img-src 'self' data:; 
-                   script-src 'self';">
+                   script-src 'self' 'unsafe-inline';">
     <title>pn3noname</title>
     <link rel="icon" type="image/svg+xml" href="Blog_favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -679,7 +679,7 @@
 <body>
     <header>
         <nav>
-            <a href="#" class="logo">
+            <a href="index.html" class="logo">
                 <img src="Blog_logo.svg" alt="pn3noname">
             </a>
             
@@ -993,28 +993,35 @@
     </footer>
 
     <script>
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const navLinks = document.getElementById('navLinks');
+        // Mobile menu toggle - 수정된 버전
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
 
-        mobileMenuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            mobileMenuBtn.classList.toggle('active');
-        });
+            if (mobileMenuBtn && navLinks) {
+                mobileMenuBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    navLinks.classList.toggle('active');
+                    mobileMenuBtn.classList.toggle('active');
+                });
 
-        // Close menu when clicking a link
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                mobileMenuBtn.classList.remove('active');
-            });
-        });
+                // Close menu when clicking a link
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('active');
+                        mobileMenuBtn.classList.remove('active');
+                    });
+                });
 
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('nav')) {
-                navLinks.classList.remove('active');
-                mobileMenuBtn.classList.remove('active');
+                // Close menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('nav')) {
+                        navLinks.classList.remove('active');
+                        mobileMenuBtn.classList.remove('active');
+                    }
+                });
             }
         });
 
