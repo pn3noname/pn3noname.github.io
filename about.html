@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="Content-Security-Policy" 
@@ -501,10 +504,43 @@
                 display: block;
                 padding: 1rem 2rem;
                 font-size: 1rem;
+                position: relative;
+                padding-left: 2.5rem;
+                transition: all 0.3s ease;
+                color: var(--text-primary);
+            }
+
+            .nav-links a::before {
+                content: '▸';
+                position: absolute;
+                left: 2rem;
+                opacity: 0;
+                transform: translateX(-10px);
+                transition: all 0.3s ease;
+                font-size: 1rem;
             }
 
             .nav-links a::after {
                 display: none;
+            }
+
+            .nav-links a:hover,
+            .nav-links a:active {
+                background: linear-gradient(90deg, var(--purple), var(--blue));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                padding-left: 3rem;
+            }
+
+            .nav-links a:hover::before,
+            .nav-links a:active::before {
+                opacity: 1;
+                transform: translateX(0);
+                background: linear-gradient(90deg, var(--purple), var(--blue));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
             }
 
             .container {
