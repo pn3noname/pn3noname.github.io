@@ -317,6 +317,10 @@
             margin-bottom: 2.5rem;
             padding-bottom: 1rem;
             border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .section-header h2 {
@@ -578,7 +582,9 @@
         @media (max-width: 768px) {
             .hero {
                 grid-template-columns: 1fr;
-                gap: 2rem;
+                gap: 2.5rem;
+                padding: 2rem 0;
+                margin-bottom: 3rem;
             }
 
             .hero-content h1 {
@@ -587,10 +593,12 @@
 
             .hero-content {
                 order: 1;
+                margin-bottom: 1rem;
             }
 
             .currently-learning {
                 order: 2;
+                margin-top: 1rem;
             }
 
             .card-grid {
@@ -644,7 +652,7 @@
             }
 
             .container {
-                padding: 3rem 1.5rem;
+                padding: 2.5rem 1.5rem;
             }
 
             .section-header h2 {
@@ -652,10 +660,10 @@
             }
 
             .badge {
-                display: block;
-                margin-left: 0;
-                margin-top: 0.5rem;
-                width: fit-content;
+                display: inline-block;
+                margin-left: 0.5rem;
+                margin-top: 0;
+                width: auto;
             }
         }
 
