@@ -11,7 +11,7 @@
                    font-src 'self' https://fonts.gstatic.com; 
                    img-src 'self' data:; 
                    script-src 'self' 'unsafe-inline';">
-    <title>pn3noname</title>
+    <title>pn3noname - Cybersecurity Learning Blog</title>
     <link rel="icon" type="image/svg+xml" href="Blog_favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,7 +35,6 @@
             --shadow: rgba(139, 111, 92, 0.08);
             --success: #059669;
             --success-light: #10b981;
-            --highlight: #b39884;
             --blue: #68a0c8;
             --blue-light: #84b3d4;
             --orange: #c9885b;
@@ -54,13 +53,12 @@
 
         /* Header */
         header {
-            background-color: var(--bg-card);
+            background-color: rgba(255, 255, 255, 0.95);
             border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
             z-index: 100;
             backdrop-filter: blur(10px);
-            background-color: rgba(255, 255, 255, 0.95);
         }
 
         nav {
@@ -149,10 +147,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
         }
 
         .nav-links a:hover::after {
@@ -287,7 +281,6 @@
             position: relative;
         }
 
-        /* Progress bar color based on completion */
         .progress-bar[data-progress="low"] {
             background: linear-gradient(90deg, var(--blue) 0%, var(--blue-light) 100%);
         }
@@ -327,8 +320,6 @@
             font-size: 1.9rem;
             font-weight: 600;
             color: var(--text-primary);
-            display: inline-block;
-            position: relative;
             letter-spacing: -0.02em;
         }
 
@@ -374,17 +365,15 @@
             border-radius: 12px;
             padding: 2rem;
             transition: all 0.3s ease;
-            cursor: pointer;
             box-shadow: 0 2px 8px var(--shadow);
         }
 
         .card:hover {
             transform: translateY(-4px);
-            backdrop-filter: blur(10px);
             background-color: rgba(250, 250, 248, 0.7);
+            backdrop-filter: blur(10px);
         }
 
-        /* Section-specific card hover effects */
         #notes .card:hover {
             box-shadow: 0 8px 32px rgba(104, 160, 200, 0.25),
                         0 0 0 1px rgba(104, 160, 200, 0.2),
@@ -393,9 +382,6 @@
         }
 
         #tags .category-card:hover {
-            transform: translateY(-4px);
-            backdrop-filter: blur(10px);
-            background-color: rgba(250, 250, 248, 0.7);
             box-shadow: 0 8px 32px rgba(201, 136, 91, 0.25),
                         0 0 0 1px rgba(201, 136, 91, 0.2),
                         inset 0 0 60px rgba(201, 136, 91, 0.05);
@@ -469,18 +455,11 @@
             color: var(--bg-card);
         }
 
-        .tag.ctf { 
-            background-color: rgba(142, 68, 173, 0.1);
-            color: var(--purple);
-        }
         .tag.web { 
             background-color: rgba(74, 144, 226, 0.1);
             color: var(--blue);
         }
-        .tag.pwn { 
-            background-color: rgba(230, 126, 34, 0.1);
-            color: var(--orange);
-        }
+
         .tag.crypto { 
             background-color: rgba(39, 174, 96, 0.1);
             color: var(--success);
@@ -508,6 +487,8 @@
 
         .category-card:hover {
             transform: translateY(-4px);
+            background-color: rgba(250, 250, 248, 0.7);
+            backdrop-filter: blur(10px);
         }
 
         .category-icon {
@@ -660,13 +641,9 @@
             }
 
             .badge {
-                display: inline-block;
                 margin-left: 0.5rem;
-                margin-top: 0;
-                width: auto;
             }
 
-            /* Footer mobile styles */
             footer {
                 padding: 2rem 1rem;
             }
@@ -683,14 +660,6 @@
                 font-size: 0.85rem;
                 flex-direction: column !important;
                 gap: 0.6rem !important;
-                align-items: center;
-            }
-
-            footer p span,
-            footer p a {
-                display: flex;
-                align-items: center;
-                justify-content: center;
             }
 
             footer p span[style*="color: var(--border)"] {
@@ -698,7 +667,7 @@
             }
         }
 
-        /* Subtle animation */
+        /* Animation */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -718,12 +687,11 @@
 <body>
     <header>
         <nav>
-            <a href="index.html" class="logo">
+            <a href="index.html" class="logo" aria-label="pn3noname Home">
                 <img src="Blog_logo.svg" alt="pn3noname">
             </a>
             
-            <!-- Hamburger menu button (mobile only) -->
-            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -746,12 +714,12 @@
                 <p>Documenting my security studies and CTF solutions.</p>
             </div>
             
-            <div class="currently-learning">
+            <aside class="currently-learning" aria-label="Current learning progress">
                 <h3>Currently Learning</h3>
                 
                 <div class="learning-item">
                     <div class="learning-header">
-                        <span class="learning-icon">
+                        <span class="learning-icon" aria-hidden="true">
                             <svg viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2">
                                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
                                 <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
@@ -761,7 +729,7 @@
                         <span class="learning-title">Splunk Fundamentals</span>
                         <span class="learning-days" id="splunk-days">Day 8/30</span>
                     </div>
-                    <div class="progress-bar-container">
+                    <div class="progress-bar-container" role="progressbar" aria-valuenow="27" aria-valuemin="0" aria-valuemax="100">
                         <div class="progress-bar" data-progress="low" style="width: 27%;"></div>
                     </div>
                     <div class="progress-text">27% Complete</div>
@@ -769,7 +737,7 @@
                 
                 <div class="learning-item">
                     <div class="learning-header">
-                        <span class="learning-icon">
+                        <span class="learning-icon" aria-hidden="true">
                             <svg viewBox="0 0 24 24" fill="none" stroke="#e67e22" stroke-width="2">
                                 <path d="M12 2L2 7l10 5 10-5-10-5z"/>
                                 <path d="M2 17l10 5 10-5"/>
@@ -779,12 +747,12 @@
                         <span class="learning-title">Wireshark Analysis</span>
                         <span class="learning-days" id="wireshark-days">Day 12/45</span>
                     </div>
-                    <div class="progress-bar-container">
+                    <div class="progress-bar-container" role="progressbar" aria-valuenow="27" aria-valuemin="0" aria-valuemax="100">
                         <div class="progress-bar" data-progress="low" style="width: 27%;"></div>
                     </div>
                     <div class="progress-text">27% Complete</div>
                 </div>
-            </div>
+            </aside>
         </section>
 
         <section id="notes">
@@ -793,7 +761,7 @@
                 <span class="badge study">Study</span>
             </div>
             <div class="card-grid">
-                <div class="card">
+                <article class="card">
                     <h3>Linux Privilege Escalation Techniques</h3>
                     <div class="card-meta">
                         <span>📅 Feb 12, 2024</span>
@@ -803,9 +771,9 @@
                         <span class="tag">linux</span>
                         <span class="tag">privilege-escalation</span>
                     </div>
-                </div>
+                </article>
 
-                <div class="card">
+                <article class="card">
                     <h3>OWASP Top 10 2024 Summary</h3>
                     <div class="card-meta">
                         <span>📅 Feb 10, 2024</span>
@@ -815,7 +783,7 @@
                         <span class="tag web">web</span>
                         <span class="tag">owasp</span>
                     </div>
-                </div>
+                </article>
             </div>
         </section>
 
@@ -826,7 +794,7 @@
             </div>
             <div class="categories">
                 <a href="#" class="category-card">
-                    <div class="category-icon">
+                    <div class="category-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="#4a90e2" stroke-width="2">
                             <path d="M4 17l6-6-6-6M12 19h8"/>
                         </svg>
@@ -835,7 +803,7 @@
                     <p class="category-count">0 posts</p>
                 </a>
                 <a href="#" class="category-card">
-                    <div class="category-icon">
+                    <div class="category-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="#8e44ad" stroke-width="2">
                             <circle cx="12" cy="12" r="2"/>
                             <circle cx="19" cy="5" r="2"/>
@@ -848,7 +816,7 @@
                     <p class="category-count">0 posts</p>
                 </a>
                 <a href="#" class="category-card">
-                    <div class="category-icon">
+                    <div class="category-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2">
                             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
                             <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
@@ -859,7 +827,7 @@
                     <p class="category-count">0 posts</p>
                 </a>
                 <a href="#" class="category-card">
-                    <div class="category-icon">
+                    <div class="category-icon" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="#e67e22" stroke-width="2">
                             <path d="M12 2L2 7l10 5 10-5-10-5z"/>
                             <path d="M2 17l10 5 10-5"/>
@@ -878,83 +846,83 @@
                 <span class="badge links">INFO</span>
             </div>
             <div class="card-grid">
-                <div class="card">
+                <article class="card">
                     <h3>The Hacker News</h3>
                     <div class="card-meta">
                         <span>🔗 News</span>
-                        <span>🌐 <a href="https://thehackernews.com" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">thehackernews.com</a></span>
+                        <span>🌐 <a href="https://thehackernews.com" target="_blank" rel="noopener noreferrer">thehackernews.com</a></span>
                     </div>
                     <p>Latest cybersecurity news, vulnerabilities, and data breaches. Essential reading for staying updated on current threats and security trends.</p>
                     <div class="tags">
                         <span class="tag">news</span>
                         <span class="tag">security</span>
                     </div>
-                </div>
+                </article>
 
-                <div class="card">
+                <article class="card">
                     <h3>HackTricks</h3>
                     <div class="card-meta">
                         <span>📚 Knowledge Base</span>
-                        <span>🌐 <a href="https://book.hacktricks.xyz" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">book.hacktricks.xyz</a></span>
+                        <span>🌐 <a href="https://book.hacktricks.xyz" target="_blank" rel="noopener noreferrer">book.hacktricks.xyz</a></span>
                     </div>
                     <p>Comprehensive pentesting methodology and techniques guide. Covers everything from enumeration to privilege escalation across different platforms.</p>
                     <div class="tags">
                         <span class="tag">pentesting</span>
                         <span class="tag">methodology</span>
                     </div>
-                </div>
+                </article>
 
-                <div class="card">
+                <article class="card">
                     <h3>PortSwigger Web Security Academy</h3>
                     <div class="card-meta">
                         <span>🎓 Learning Platform</span>
-                        <span>🌐 <a href="https://portswigger.net/web-security" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">portswigger.net</a></span>
+                        <span>🌐 <a href="https://portswigger.net/web-security" target="_blank" rel="noopener noreferrer">portswigger.net</a></span>
                     </div>
                     <p>Free interactive labs and learning materials for web application security. Created by the team behind Burp Suite with hands-on practice environments.</p>
                     <div class="tags">
                         <span class="tag web">web</span>
                         <span class="tag">labs</span>
                     </div>
-                </div>
+                </article>
 
-                <div class="card">
+                <article class="card">
                     <h3>Krebs on Security</h3>
                     <div class="card-meta">
                         <span>✍️ Blog</span>
-                        <span>🌐 <a href="https://krebsonsecurity.com" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">krebsonsecurity.com</a></span>
+                        <span>🌐 <a href="https://krebsonsecurity.com" target="_blank" rel="noopener noreferrer">krebsonsecurity.com</a></span>
                     </div>
                     <p>In-depth investigative journalism on cybercrime and security. Brian Krebs provides detailed analysis of breaches, scams, and security incidents.</p>
                     <div class="tags">
                         <span class="tag">blog</span>
                         <span class="tag">cybercrime</span>
                     </div>
-                </div>
+                </article>
 
-                <div class="card">
+                <article class="card">
                     <h3>MITRE ATT&CK Framework</h3>
                     <div class="card-meta">
                         <span>📋 Framework</span>
-                        <span>🌐 <a href="https://attack.mitre.org" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">attack.mitre.org</a></span>
+                        <span>🌐 <a href="https://attack.mitre.org" target="_blank" rel="noopener noreferrer">attack.mitre.org</a></span>
                     </div>
                     <p>Global knowledge base of adversary tactics and techniques based on real-world observations. Essential for understanding threat actor behaviors.</p>
                     <div class="tags">
                         <span class="tag">framework</span>
                         <span class="tag">threat-intelligence</span>
                     </div>
-                </div>
+                </article>
 
-                <div class="card">
+                <article class="card">
                     <h3>GTFOBins</h3>
                     <div class="card-meta">
                         <span>🛠️ Reference</span>
-                        <span>🌐 <a href="https://gtfobins.github.io" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">gtfobins.github.io</a></span>
+                        <span>🌐 <a href="https://gtfobins.github.io" target="_blank" rel="noopener noreferrer">gtfobins.github.io</a></span>
                     </div>
                     <p>Curated list of Unix binaries that can be used to bypass local security restrictions. Invaluable for privilege escalation scenarios.</p>
                     <div class="tags">
                         <span class="tag">linux</span>
                         <span class="tag">privilege-escalation</span>
                     </div>
-                </div>
+                </article>
             </div>
         </section>
         
@@ -964,51 +932,7 @@
                 <span class="badge ctf">CTF</span>
             </div>
             <div class="card-grid">
-                <!-- Coming Soon - CTF writeups will be added here -->
-                
-                <!-- 
-                <div class="card">
-                    <h3>picoCTF 2024 - Web Exploitation</h3>
-                    <div class="card-meta">
-                        <span>📅 Feb 10, 2024</span>
-                        <span>⏱️ 5 min read</span>
-                    </div>
-                    <p>Authentication bypass using SQL Injection. Leveraging UNION-based attacks to enumerate database structure and gain administrative access.</p>
-                    <div class="tags">
-                        <span class="tag web">web</span>
-                        <span class="tag">sqli</span>
-                        <span class="tag ctf">ctf</span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>HackTheBox - Buffer Overflow Challenge</h3>
-                    <div class="card-meta">
-                        <span>📅 Feb 8, 2024</span>
-                        <span>⏱️ 8 min read</span>
-                    </div>
-                    <p>Stack-based buffer overflow vulnerability analysis. Constructing ROP chains to bypass ASLR and DEP protections with step-by-step methodology.</p>
-                    <div class="tags">
-                        <span class="tag pwn">pwn</span>
-                        <span class="tag">bof</span>
-                        <span class="tag">rop</span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>CryptoHack - RSA Challenges</h3>
-                    <div class="card-meta">
-                        <span>📅 Feb 5, 2024</span>
-                        <span>⏱️ 6 min read</span>
-                    </div>
-                    <p>RSA cryptanalysis using Small Public Exponent Attack and Wiener's Attack. Mathematical foundations and practical exploitation techniques.</p>
-                    <div class="tags">
-                        <span class="tag crypto">crypto</span>
-                        <span class="tag">rsa</span>
-                        <span class="tag">math</span>
-                    </div>
-                </div>
-                -->
+                <!-- CTF writeups will be added here -->
             </div>
         </section>
     </main>
@@ -1021,7 +945,7 @@
             <span>© 2026 pn3noname</span>
             <span style="color: var(--border);">|</span>
             <a href="https://github.com/pn3noname/pn3noname.github.io" style="display: inline-flex; align-items: center; gap: 0.4rem;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                 </svg>
                 GitHub
@@ -1032,8 +956,10 @@
     </footer>
 
     <script>
-        // Mobile menu toggle - 수정된 버전
-        document.addEventListener('DOMContentLoaded', function() {
+        (function() {
+            'use strict';
+
+            // Mobile menu toggle
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const navLinks = document.getElementById('navLinks');
 
@@ -1042,15 +968,18 @@
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    navLinks.classList.toggle('active');
+                    const isActive = navLinks.classList.toggle('active');
                     mobileMenuBtn.classList.toggle('active');
+                    mobileMenuBtn.setAttribute('aria-expanded', isActive);
                 });
 
                 // Close menu when clicking a link
-                navLinks.querySelectorAll('a').forEach(link => {
+                const links = navLinks.querySelectorAll('a');
+                links.forEach(function(link) {
                     link.addEventListener('click', function() {
                         navLinks.classList.remove('active');
                         mobileMenuBtn.classList.remove('active');
+                        mobileMenuBtn.setAttribute('aria-expanded', 'false');
                     });
                 });
 
@@ -1059,65 +988,70 @@
                     if (!e.target.closest('nav')) {
                         navLinks.classList.remove('active');
                         mobileMenuBtn.classList.remove('active');
+                        mobileMenuBtn.setAttribute('aria-expanded', 'false');
                     }
                 });
             }
-        });
 
-        // Auto-update learning progress days
-        function updateLearningDays() {
-            const learningItems = [
-                { 
-                    id: 'splunk-days',
-                    startDate: '2025-02-08', // YYYY-MM-DD 형식으로 시작 날짜 입력
-                    totalDays: 30
-                },
-                { 
-                    id: 'wireshark-days',
-                    startDate: '2025-02-04', // YYYY-MM-DD 형식으로 시작 날짜 입력
-                    totalDays: 45
-                }
-            ];
+            // Auto-update learning progress days
+            function updateLearningDays() {
+                const learningItems = [
+                    { 
+                        id: 'splunk-days',
+                        startDate: '2025-02-08',
+                        totalDays: 30
+                    },
+                    { 
+                        id: 'wireshark-days',
+                        startDate: '2025-02-04',
+                        totalDays: 45
+                    }
+                ];
 
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
 
-            learningItems.forEach(item => {
-                const startDate = new Date(item.startDate);
-                startDate.setHours(0, 0, 0, 0);
-                
-                const diffTime = today - startDate;
-                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
-                const currentDay = Math.max(1, Math.min(diffDays, item.totalDays));
-                
-                const element = document.getElementById(item.id);
-                if (element) {
-                    element.textContent = `Day ${currentDay}/${item.totalDays}`;
-                }
-            });
-        }
+                learningItems.forEach(function(item) {
+                    const startDate = new Date(item.startDate);
+                    startDate.setHours(0, 0, 0, 0);
+                    
+                    const diffTime = today - startDate;
+                    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                    const currentDay = Math.max(1, Math.min(diffDays, item.totalDays));
+                    
+                    const element = document.getElementById(item.id);
+                    if (element) {
+                        element.textContent = 'Day ' + currentDay + '/' + item.totalDays;
+                    }
 
-        // Update progress bar colors based on percentage
-        function updateProgressColors() {
-            document.querySelectorAll('.progress-bar').forEach(bar => {
-                const width = parseFloat(bar.style.width);
-                if (width >= 90) {
-                    bar.setAttribute('data-progress', 'complete');
-                } else if (width >= 60) {
-                    bar.setAttribute('data-progress', 'high');
-                } else if (width >= 30) {
-                    bar.setAttribute('data-progress', 'medium');
-                } else {
-                    bar.setAttribute('data-progress', 'low');
-                }
-            });
-        }
+                    // Update progress bar
+                    const percentage = Math.round((currentDay / item.totalDays) * 100);
+                    const progressBar = element.closest('.learning-item').querySelector('.progress-bar');
+                    const progressText = element.closest('.learning-item').querySelector('.progress-text');
+                    const progressContainer = element.closest('.learning-item').querySelector('.progress-bar-container');
+                    
+                    if (progressBar && progressText && progressContainer) {
+                        progressBar.style.width = percentage + '%';
+                        progressText.textContent = percentage + '% Complete';
+                        progressContainer.setAttribute('aria-valuenow', percentage);
 
-        // Run on page load
-        document.addEventListener('DOMContentLoaded', () => {
+                        // Update color
+                        if (percentage >= 90) {
+                            progressBar.setAttribute('data-progress', 'complete');
+                        } else if (percentage >= 60) {
+                            progressBar.setAttribute('data-progress', 'high');
+                        } else if (percentage >= 30) {
+                            progressBar.setAttribute('data-progress', 'medium');
+                        } else {
+                            progressBar.setAttribute('data-progress', 'low');
+                        }
+                    }
+                });
+            }
+
+            // Run on page load
             updateLearningDays();
-            updateProgressColors();
-        });
+        })();
     </script>
 </body>
 </html>
