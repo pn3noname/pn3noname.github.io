@@ -545,7 +545,7 @@
         footer {
             background-color: var(--bg-secondary);
             border-top: 1px solid var(--border);
-            padding: 3rem 2rem;
+            padding: 2.5rem 2rem;
             text-align: center;
             color: var(--text-secondary);
             margin-top: 5rem;
@@ -556,11 +556,11 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
 
         footer .logo-container img {
-            height: 30px;
+            height: 32px;
         }
 
         footer a {
@@ -664,6 +664,37 @@
                 margin-left: 0.5rem;
                 margin-top: 0;
                 width: auto;
+            }
+
+            /* Footer mobile styles */
+            footer {
+                padding: 2rem 1rem;
+            }
+
+            footer .logo-container {
+                margin-bottom: 1.5rem;
+            }
+
+            footer .logo-container img {
+                height: 35px;
+            }
+
+            footer p {
+                font-size: 0.85rem;
+                flex-direction: column !important;
+                gap: 0.6rem !important;
+                align-items: center;
+            }
+
+            footer p span,
+            footer p a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            footer p span[style*="color: var(--border)"] {
+                display: none;
             }
         }
 
