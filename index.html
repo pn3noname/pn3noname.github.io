@@ -206,36 +206,6 @@
             gap: 0.5rem;
         }
 
-        .currently-learning h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .currently-learning h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .currently-learning h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
         .currently-learning h3::after {
             content: '[####--]';
             font-size: 0.95rem;
@@ -410,7 +380,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 2rem;
-            margin-bottom: 5rem;
+            margin-bottom: 2rem;
         }
 
         .card {
@@ -519,12 +489,58 @@
             color: var(--success);
         }
 
+        /* View More Button */
+        .view-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1.2rem;
+            background-color: var(--bg-card);
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .view-more-btn:hover {
+            transform: translateX(4px);
+        }
+
+        /* Section-specific View More colors */
+        #notes .view-more-btn:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        #tags .view-more-btn:hover {
+            border-color: var(--orange);
+            color: var(--orange);
+        }
+
+        #resources .view-more-btn:hover {
+            border-color: #8a9a5b;
+            color: #8a9a5b;
+        }
+
+        #writeups .view-more-btn:hover {
+            border-color: var(--purple);
+            color: var(--purple);
+        }
+
+        /* Section spacing */
+        section {
+            margin-bottom: 3.5rem;
+        }
+
         /* Categories */
         .categories {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 5rem;
+            margin-bottom: 2rem;
         }
 
         .category-card {
@@ -814,30 +830,11 @@
                 <h2>Learning Notes</h2>
                 <span class="badge study">Study</span>
             </div>
-            <div class="card-grid">
-                <article class="card">
-                    <h3>Linux Privilege Escalation Techniques</h3>
-                    <div class="card-meta">
-                        <span>📅 Feb 12, 2024</span>
-                    </div>
-                    <p>Comprehensive guide to Linux privilege escalation methods including SUID exploitation, Cron abuse, and kernel exploits. Practical techniques for penetration testing engagements.</p>
-                    <div class="tags">
-                        <span class="tag">linux</span>
-                        <span class="tag">privilege-escalation</span>
-                    </div>
-                </article>
-
-                <article class="card">
-                    <h3>OWASP Top 10 2024 Summary</h3>
-                    <div class="card-meta">
-                        <span>📅 Feb 10, 2024</span>
-                    </div>
-                    <p>Latest OWASP Top 10 vulnerabilities with detailed explanations and hands-on examples. Building a strong foundation in web application security.</p>
-                    <div class="tags">
-                        <span class="tag web">web</span>
-                        <span class="tag">owasp</span>
-                    </div>
-                </article>
+            <div class="card-grid" id="notesPreview">
+                <!-- Notes will be inserted by JavaScript -->
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <a href="notes.html" class="view-more-btn">View More →</a>
             </div>
         </section>
 
@@ -846,51 +843,11 @@
                 <h2>Tags</h2>
                 <span class="badge topics">Topics</span>
             </div>
-            <div class="categories">
-                <a href="#" class="category-card">
-                    <div class="category-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#4a90e2" stroke-width="2">
-                            <path d="M4 17l6-6-6-6M12 19h8"/>
-                        </svg>
-                    </div>
-                    <h3>Linux</h3>
-                    <p class="category-count">0 posts</p>
-                </a>
-                <a href="#" class="category-card">
-                    <div class="category-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#8e44ad" stroke-width="2">
-                            <circle cx="12" cy="12" r="2"/>
-                            <circle cx="19" cy="5" r="2"/>
-                            <circle cx="5" cy="19" r="2"/>
-                            <line x1="13.5" y1="10.5" x2="17.5" y2="6.5"/>
-                            <line x1="10.5" y1="13.5" x2="6.5" y2="17.5"/>
-                        </svg>
-                    </div>
-                    <h3>Network</h3>
-                    <p class="category-count">0 posts</p>
-                </a>
-                <a href="#" class="category-card">
-                    <div class="category-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2">
-                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-                            <line x1="12" y1="22.08" x2="12" y2="12"/>
-                        </svg>
-                    </div>
-                    <h3>Splunk</h3>
-                    <p class="category-count">0 posts</p>
-                </a>
-                <a href="#" class="category-card">
-                    <div class="category-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#e67e22" stroke-width="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                            <path d="M2 17l10 5 10-5"/>
-                            <path d="M2 12l10 5 10-5"/>
-                        </svg>
-                    </div>
-                    <h3>Wireshark</h3>
-                    <p class="category-count">0 posts</p>
-                </a>
+            <div class="categories" id="tagsPreview">
+                <!-- Tags will be inserted by JavaScript -->
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <a href="tags.html" class="view-more-btn">View More →</a>
             </div>
         </section>
 
@@ -899,84 +856,11 @@
                 <h2>Resources</h2>
                 <span class="badge links">INFO</span>
             </div>
-            <div class="card-grid">
-                <article class="card">
-                    <h3>The Hacker News</h3>
-                    <div class="card-meta">
-                        <span>🔗 News</span>
-                        <span>🌐 <a href="https://thehackernews.com" target="_blank" rel="noopener noreferrer">thehackernews.com</a></span>
-                    </div>
-                    <p>Latest cybersecurity news, vulnerabilities, and data breaches. Essential reading for staying updated on current threats and security trends.</p>
-                    <div class="tags">
-                        <span class="tag">news</span>
-                        <span class="tag">security</span>
-                    </div>
-                </article>
-
-                <article class="card">
-                    <h3>HackTricks</h3>
-                    <div class="card-meta">
-                        <span>📚 Knowledge Base</span>
-                        <span>🌐 <a href="https://book.hacktricks.xyz" target="_blank" rel="noopener noreferrer">book.hacktricks.xyz</a></span>
-                    </div>
-                    <p>Comprehensive pentesting methodology and techniques guide. Covers everything from enumeration to privilege escalation across different platforms.</p>
-                    <div class="tags">
-                        <span class="tag">pentesting</span>
-                        <span class="tag">methodology</span>
-                    </div>
-                </article>
-
-                <article class="card">
-                    <h3>PortSwigger Web Security Academy</h3>
-                    <div class="card-meta">
-                        <span>🎓 Learning Platform</span>
-                        <span>🌐 <a href="https://portswigger.net/web-security" target="_blank" rel="noopener noreferrer">portswigger.net</a></span>
-                    </div>
-                    <p>Free interactive labs and learning materials for web application security. Created by the team behind Burp Suite with hands-on practice environments.</p>
-                    <div class="tags">
-                        <span class="tag web">web</span>
-                        <span class="tag">labs</span>
-                    </div>
-                </article>
-
-                <article class="card">
-                    <h3>Krebs on Security</h3>
-                    <div class="card-meta">
-                        <span>✍️ Blog</span>
-                        <span>🌐 <a href="https://krebsonsecurity.com" target="_blank" rel="noopener noreferrer">krebsonsecurity.com</a></span>
-                    </div>
-                    <p>In-depth investigative journalism on cybercrime and security. Brian Krebs provides detailed analysis of breaches, scams, and security incidents.</p>
-                    <div class="tags">
-                        <span class="tag">blog</span>
-                        <span class="tag">cybercrime</span>
-                    </div>
-                </article>
-
-                <article class="card">
-                    <h3>MITRE ATT&CK Framework</h3>
-                    <div class="card-meta">
-                        <span>📋 Framework</span>
-                        <span>🌐 <a href="https://attack.mitre.org" target="_blank" rel="noopener noreferrer">attack.mitre.org</a></span>
-                    </div>
-                    <p>Global knowledge base of adversary tactics and techniques based on real-world observations. Essential for understanding threat actor behaviors.</p>
-                    <div class="tags">
-                        <span class="tag">framework</span>
-                        <span class="tag">threat-intelligence</span>
-                    </div>
-                </article>
-
-                <article class="card">
-                    <h3>GTFOBins</h3>
-                    <div class="card-meta">
-                        <span>🛠️ Reference</span>
-                        <span>🌐 <a href="https://gtfobins.github.io" target="_blank" rel="noopener noreferrer">gtfobins.github.io</a></span>
-                    </div>
-                    <p>Curated list of Unix binaries that can be used to bypass local security restrictions. Invaluable for privilege escalation scenarios.</p>
-                    <div class="tags">
-                        <span class="tag">linux</span>
-                        <span class="tag">privilege-escalation</span>
-                    </div>
-                </article>
+            <div class="card-grid" id="resourcesPreview">
+                <!-- Resources will be inserted by JavaScript -->
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <a href="resources.html" class="view-more-btn">View More →</a>
             </div>
         </section>
         
@@ -985,8 +869,11 @@
                 <h2>Recent Writeups</h2>
                 <span class="badge ctf">CTF</span>
             </div>
-            <div class="card-grid">
-                <!-- CTF writeups will be added here -->
+            <div class="card-grid" id="writeupsPreview">
+                <!-- CTF writeups will be inserted by JavaScript -->
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <a href="writeups.html" class="view-more-btn">View More →</a>
             </div>
         </section>
     </main>
@@ -1013,6 +900,104 @@
         (function() {
             'use strict';
 
+            // Sample data - Replace with your actual data
+            const notesData = [
+                {
+                    title: "Linux Privilege Escalation Techniques",
+                    date: "2024-02-12",
+                    description: "Comprehensive guide to Linux privilege escalation methods including SUID exploitation, Cron abuse, and kernel exploits. Practical techniques for penetration testing engagements.",
+                    tags: ["linux", "privilege-escalation"]
+                },
+                {
+                    title: "OWASP Top 10 2024 Summary",
+                    date: "2024-02-10",
+                    description: "Latest OWASP Top 10 vulnerabilities with detailed explanations and hands-on examples. Building a strong foundation in web application security.",
+                    tags: ["web", "owasp"]
+                },
+                {
+                    title: "SQL Injection Deep Dive",
+                    date: "2024-02-08",
+                    description: "Advanced SQL injection techniques including blind SQLi, time-based attacks, and WAF bypass methods.",
+                    tags: ["web", "sql-injection"]
+                },
+                {
+                    title: "Network Traffic Analysis",
+                    date: "2024-02-05",
+                    description: "Essential techniques for analyzing network protocols and detecting anomalies using Wireshark.",
+                    tags: ["network", "wireshark"]
+                },
+                {
+                    title: "Introduction to Cryptography",
+                    date: "2024-02-01",
+                    description: "Understanding symmetric and asymmetric encryption, hashing algorithms, and cryptographic implementations.",
+                    tags: ["crypto", "fundamentals"]
+                },
+                {
+                    title: "Cross-Site Scripting (XSS)",
+                    date: "2024-01-28",
+                    description: "Comprehensive guide to XSS attacks including reflected, stored, and DOM-based XSS.",
+                    tags: ["web", "xss"]
+                }
+            ];
+
+            const resourcesData = [
+                {
+                    title: "The Hacker News",
+                    type: "News",
+                    url: "https://thehackernews.com",
+                    description: "Latest cybersecurity news, vulnerabilities, and data breaches. Essential reading for staying updated on current threats and security trends.",
+                    tags: ["news", "security"]
+                },
+                {
+                    title: "HackTricks",
+                    type: "Knowledge Base",
+                    url: "https://book.hacktricks.xyz",
+                    description: "Comprehensive pentesting methodology and techniques guide. Covers everything from enumeration to privilege escalation across different platforms.",
+                    tags: ["pentesting", "methodology"]
+                },
+                {
+                    title: "PortSwigger Web Security Academy",
+                    type: "Learning Platform",
+                    url: "https://portswigger.net/web-security",
+                    description: "Free interactive labs and learning materials for web application security. Created by the team behind Burp Suite with hands-on practice environments.",
+                    tags: ["web", "labs"]
+                },
+                {
+                    title: "Krebs on Security",
+                    type: "Blog",
+                    url: "https://krebsonsecurity.com",
+                    description: "In-depth investigative journalism on cybercrime and security. Brian Krebs provides detailed analysis of breaches, scams, and security incidents.",
+                    tags: ["blog", "cybercrime"]
+                },
+                {
+                    title: "MITRE ATT&CK Framework",
+                    type: "Framework",
+                    url: "https://attack.mitre.org",
+                    description: "Global knowledge base of adversary tactics and techniques based on real-world observations. Essential for understanding threat actor behaviors.",
+                    tags: ["framework", "threat-intelligence"]
+                },
+                {
+                    title: "GTFOBins",
+                    type: "Reference",
+                    url: "https://gtfobins.github.io",
+                    description: "Curated list of Unix binaries that can be used to bypass local security restrictions. Invaluable for privilege escalation scenarios.",
+                    tags: ["linux", "privilege-escalation"]
+                }
+            ];
+
+            const tagsData = [
+                { name: "Linux", icon: "terminal", count: 0 },
+                { name: "Network", icon: "network", count: 0 },
+                { name: "Splunk", icon: "splunk", count: 0 },
+                { name: "Wireshark", icon: "wireshark", count: 0 },
+                { name: "Web", icon: "web", count: 0 },
+                { name: "Cryptography", icon: "crypto", count: 0 }
+            ];
+
+            const writeupsData = [
+                // Add your writeup data here
+            ];
+
             // Mobile menu toggle
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const navLinks = document.getElementById('navLinks');
@@ -1027,7 +1012,6 @@
                     mobileMenuBtn.setAttribute('aria-expanded', isActive);
                 });
 
-                // Close menu when clicking a link
                 const links = navLinks.querySelectorAll('a');
                 links.forEach(function(link) {
                     link.addEventListener('click', function() {
@@ -1037,13 +1021,134 @@
                     });
                 });
 
-                // Close menu when clicking outside
                 document.addEventListener('click', function(e) {
                     if (!e.target.closest('nav')) {
                         navLinks.classList.remove('active');
                         mobileMenuBtn.classList.remove('active');
                         mobileMenuBtn.setAttribute('aria-expanded', 'false');
                     }
+                });
+            }
+
+            // Render preview (max 4 items)
+            function renderNotesPreview() {
+                const notesPreview = document.getElementById('notesPreview');
+                const preview = notesData.slice(0, 4);
+                
+                preview.forEach(function(note) {
+                    const card = document.createElement('article');
+                    card.className = 'card';
+                    
+                    const tagsHTML = note.tags.map(function(tag) {
+                        return '<span class="tag ' + tag + '">' + tag + '</span>';
+                    }).join('');
+                    
+                    card.innerHTML = `
+                        <h3>${note.title}</h3>
+                        <div class="card-meta">
+                            <span>📅 ${note.date}</span>
+                        </div>
+                        <p>${note.description}</p>
+                        <div class="tags">
+                            ${tagsHTML}
+                        </div>
+                    `;
+                    
+                    notesPreview.appendChild(card);
+                });
+            }
+
+            function renderResourcesPreview() {
+                const resourcesPreview = document.getElementById('resourcesPreview');
+                const preview = resourcesData.slice(0, 4);
+                
+                preview.forEach(function(resource) {
+                    const card = document.createElement('article');
+                    card.className = 'card';
+                    
+                    const tagsHTML = resource.tags.map(function(tag) {
+                        return '<span class="tag">' + tag + '</span>';
+                    }).join('');
+                    
+                    card.innerHTML = `
+                        <h3>${resource.title}</h3>
+                        <div class="card-meta">
+                            <span>🔗 ${resource.type}</span>
+                            <span>🌐 <a href="${resource.url}" target="_blank" rel="noopener noreferrer">${resource.url.replace('https://', '')}</a></span>
+                        </div>
+                        <p>${resource.description}</p>
+                        <div class="tags">
+                            ${tagsHTML}
+                        </div>
+                    `;
+                    
+                    resourcesPreview.appendChild(card);
+                });
+            }
+
+            function renderTagsPreview() {
+                const tagsPreview = document.getElementById('tagsPreview');
+                const preview = tagsData.slice(0, 4);
+                
+                const iconMap = {
+                    terminal: {
+                        color: '#4a90e2',
+                        path: '<path d="M4 17l6-6-6-6M12 19h8"/>'
+                    },
+                    network: {
+                        color: '#8e44ad',
+                        path: '<circle cx="12" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><line x1="13.5" y1="10.5" x2="17.5" y2="6.5"/><line x1="10.5" y1="13.5" x2="6.5" y2="17.5"/>'
+                    },
+                    splunk: {
+                        color: '#27ae60',
+                        path: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>'
+                    },
+                    wireshark: {
+                        color: '#e67e22',
+                        path: '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>'
+                    },
+                    web: {
+                        color: '#e91e63',
+                        path: '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'
+                    },
+                    crypto: {
+                        color: '#f39c12',
+                        path: '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>'
+                    }
+                };
+                
+                preview.forEach(function(tag) {
+                    const card = document.createElement('a');
+                    card.href = '#';
+                    card.className = 'category-card';
+                    
+                    const iconData = iconMap[tag.icon] || iconMap.terminal;
+                    
+                    card.innerHTML = `
+                        <div class="category-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="${iconData.color}" stroke-width="2">
+                                ${iconData.path}
+                            </svg>
+                        </div>
+                        <h3>${tag.name}</h3>
+                        <p class="category-count">${tag.count} posts</p>
+                    `;
+                    
+                    tagsPreview.appendChild(card);
+                });
+            }
+
+            function renderWriteupsPreview() {
+                const writeupsPreview = document.getElementById('writeupsPreview');
+                
+                if (writeupsData.length === 0) {
+                    writeupsPreview.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">No writeups yet. Check back soon!</p>';
+                    return;
+                }
+                
+                const preview = writeupsData.slice(0, 4);
+                preview.forEach(function(writeup) {
+                    // Render writeup cards
                 });
             }
 
@@ -1089,7 +1194,6 @@
                         progressText.textContent = percentage + '% Complete';
                         progressContainer.setAttribute('aria-valuenow', percentage);
 
-                        // Update color
                         if (percentage >= 90) {
                             progressBar.setAttribute('data-progress', 'complete');
                         } else if (percentage >= 60) {
@@ -1103,7 +1207,11 @@
                 });
             }
 
-            // Run on page load
+            // Initialize
+            renderNotesPreview();
+            renderResourcesPreview();
+            renderTagsPreview();
+            renderWriteupsPreview();
             updateLearningDays();
         })();
     </script>
