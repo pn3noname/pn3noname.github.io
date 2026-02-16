@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+                   font-src 'self' https://fonts.gstatic.com; 
+                   img-src 'self' data:; 
+                   script-src 'self' 'unsafe-inline';">
+    <title>pn3noname | Learning Notes</title>
+    <link rel="icon" type="image/svg+xml" href="Blog_favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #f4f2ef;
+            --bg-secondary: #e8e4dd;
+            --bg-card: #fafaf8;
+            --text-primary: #3a3a3a;
+            --text-secondary: #6f6f6f;
+            --accent: #8b6f5c;
+            --accent-light: #a18976;
+            --border: #d5cfc5;
+            --shadow: rgba(139, 111, 92, 0.08);
+            --blue: #68a0c8;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            letter-spacing: -0.01em;
+        }
+
+        /* Header */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            z-index: 101;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 101;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-primary);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(7px, 7px);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #2d2d2d;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #b56576 0%, #68a0c8 100%);
+            transition: width 0.4s ease;
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover {
+            background: linear-gradient(90deg, #b56576, #68a0c8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            background: linear-gradient(90deg, #b56576, #68a0c8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Page Header - Separate top section */
+        .page-header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem 2rem 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .page-header p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem 2rem;
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.65rem 0.6rem 0.65rem 2.2rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .search-box input::placeholder {
+            font-size: 0.8rem;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--blue);
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 0.65rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 13px;
+            height: 13px;
+            color: var(--text-secondary);
+        }
+
+        .sidebar-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .sidebar-section:first-child {
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .sidebar-section h3 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.7rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 1.5px solid var(--border);
+            display: inline-block;
+        }
+
+        .filter-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-item input[type="checkbox"],
+        .filter-item input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .filter-item label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.35rem 0;
+            flex: 1;
+            transition: color 0.2s ease;
+        }
+
+        .filter-item:hover label {
+            color: var(--text-primary);
+        }
+
+        .filter-item input:checked + label {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Mobile filter toggle */
+        .mobile-filter-toggle {
+            display: none;
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 1rem;
+            text-align: left;
+            position: relative;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .mobile-filter-toggle::after {
+            content: '▼';
+            position: absolute;
+            right: 1.2rem;
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-filter-toggle.active::after {
+            transform: rotate(180deg);
+        }
+
+        .mobile-filter-toggle:hover {
+            border-color: var(--blue);
+        }
+
+        /* Main Content */
+        .main-content {
+            min-height: 70vh;
+            margin-top: -0.5rem;
+        }
+
+        .content-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .content-header h2 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .stats-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Notes Grid */
+        .notes-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .note-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px var(--shadow);
+            cursor: pointer;
+        }
+
+        .note-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(104, 160, 200, 0.25),
+                        0 0 0 1px rgba(104, 160, 200, 0.2),
+                        inset 0 0 60px rgba(104, 160, 200, 0.05);
+            border-color: rgba(104, 160, 200, 0.3);
+            background-color: rgba(250, 250, 248, 0.7);
+            backdrop-filter: blur(10px);
+        }
+
+        .note-category {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.8rem;
+        }
+
+        .note-title {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+            line-height: 1.4;
+            letter-spacing: -0.02em;
+        }
+
+        .note-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .note-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .note-tag {
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+            padding: 0.35rem 0.9rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-family: 'Source Code Pro', monospace;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .note-tag:hover {
+            background-color: var(--blue);
+            color: var(--bg-card);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .pagination-btn {
+            min-width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            padding: 0 0.8rem;
+        }
+
+        .pagination-btn:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+            background-color: rgba(104, 160, 200, 0.05);
+        }
+
+        .pagination-btn.active {
+            background-color: var(--blue);
+            color: white;
+            border-color: var(--blue);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .pagination-btn:disabled:hover {
+            border-color: var(--border);
+            color: var(--text-secondary);
+            background-color: var(--bg-card);
+        }
+
+        .pagination-ellipsis {
+            color: var(--text-secondary);
+            padding: 0 0.5rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: 5rem;
+        }
+
+        footer .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        footer .logo-container img {
+            height: 32px;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        footer a:hover {
+            color: var(--accent-light);
+        }
+
+        footer p {
+            font-size: 0.95rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .sidebar {
+                position: static;
+                display: block;
+            }
+
+            .page-header {
+                padding: 2rem 2rem 0.8rem 2rem;
+            }
+
+            .page-header h1 {
+                margin-bottom: 0.5rem;
+            }
+
+            .page-header p {
+                margin-bottom: 0;
+            }
+
+            .search-box {
+                margin-top: 2rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .sidebar-section {
+                margin-bottom: 1.5rem;
+            }
+
+            /* Show mobile filter toggle at tablet size */
+            .mobile-filter-toggle {
+                display: block;
+                margin-bottom: 1.5rem;
+            }
+
+            /* Hide filter sections (Sort, Category) on tablet */
+            .sidebar-section {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s ease;
+                margin-bottom: 0;
+            }
+
+            .sidebar-section.show {
+                max-height: 2000px;
+                margin-bottom: 1.5rem;
+            }
+
+            .content-header {
+                margin-top: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--bg-card);
+                flex-direction: column;
+                gap: 0;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                border-bottom: 1px solid var(--border);
+                box-shadow: 0 4px 6px var(--shadow);
+            }
+
+            .nav-links.active {
+                max-height: 400px;
+            }
+
+            .nav-links li {
+                border-bottom: 1px solid var(--border);
+            }
+
+            .nav-links li:last-child {
+                border-bottom: none;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+
+            .nav-links a::after {
+                display: none;
+            }
+
+            .page-header {
+                padding: 1.5rem 1rem 1rem 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+                margin-bottom: 0.6rem;
+            }
+
+            .page-header p {
+                margin-bottom: 0;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .search-box {
+                margin-top: 2rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .mobile-filter-toggle {
+                margin-bottom: 1.2rem;
+            }
+
+            .content-header {
+                margin-top: 0;
+            }
+
+            .notes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                padding: 2rem 1rem;
+            }
+
+            footer p {
+                flex-direction: column !important;
+                gap: 0.6rem !important;
+            }
+
+            footer p span[style*="color: var(--border)"] {
+                display: none;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .note-card {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo" aria-label="pn3noname Home">
+                <img src="Blog_logo.svg" alt="pn3noname">
+            </a>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#notes" class="active">Learning Notes</a></li>
+                <li><a href="index.html#tags">Tags</a></li>
+                <li><a href="index.html#resources">Resources</a></li>
+                <li><a href="index.html#writeups">Writeups</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <h1>Learning Notes</h1>
+        <p>Explore my collection of cybersecurity documentation, study guides, and technical writeups.</p>
+    </div>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="search-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search all resources">
+            </div>
+
+            <button class="mobile-filter-toggle" id="mobileFilterToggle">
+                Filter all resources
+            </button>
+
+            <div class="sidebar-section">
+                <h3>Sort</h3>
+                <div class="filter-list">
+                    <div class="filter-item">
+                        <input type="radio" id="sort-featured" name="sort" value="featured">
+                        <label for="sort-featured">Featured</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="radio" id="sort-newest" name="sort" value="newest" checked>
+                        <label for="sort-newest">Newest</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="radio" id="sort-az" name="sort" value="az">
+                        <label for="sort-az">A-Z</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Category</h3>
+                <div class="filter-list">
+                    <div class="filter-item">
+                        <input type="checkbox" id="cat-web" value="web">
+                        <label for="cat-web">Web Security</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="cat-linux" value="linux">
+                        <label for="cat-linux">Linux</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="cat-network" value="network">
+                        <label for="cat-network">Network</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="cat-crypto" value="crypto">
+                        <label for="cat-crypto">Cryptography</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="checkbox" id="cat-forensics" value="forensics">
+                        <label for="cat-forensics">Forensics</label>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="content-header">
+                <h2>All Learning Notes</h2>
+                <p class="stats-text"><span id="resultCount">0</span> Results</p>
+            </div>
+
+            <div class="notes-grid" id="notesGrid">
+                <!-- Notes will be inserted here -->
+            </div>
+
+            <div class="pagination hidden" id="pagination">
+                <!-- Pagination will be inserted here -->
+            </div>
+
+            <div class="empty-state hidden" id="emptyState">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+                <h3>No results found</h3>
+                <p>Try adjusting your search or filter to find what you're looking for.</p>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <div class="logo-container">
+            <img src="Blog_logo.svg" alt="pn3noname">
+        </div>
+        <p style="display: flex; align-items: center; justify-content: center; gap: 0.8rem;">
+            <span>© 2026 pn3noname</span>
+            <span style="color: var(--border);">|</span>
+            <a href="https://github.com/pn3noname" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.4rem;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                GitHub
+            </a>
+            <span style="color: var(--border);">|</span>
+            <span>MIT License</span>
+        </p>
+    </footer>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const notesData = [
+                {
+                    id: 1,
+                    title: "Linux Privilege Escalation Techniques",
+                    description: "Comprehensive guide to Linux privilege escalation methods including SUID exploitation, Cron abuse, and kernel exploits. Practical techniques for penetration testing engagements.",
+                    date: "2024-02-12",
+                    category: "linux",
+                    tags: ["linux", "privilege-escalation", "pentesting"]
+                },
+                {
+                    id: 2,
+                    title: "OWASP Top 10 2024 Summary",
+                    description: "Latest OWASP Top 10 vulnerabilities with detailed explanations and hands-on examples. Building a strong foundation in web application security.",
+                    date: "2024-02-10",
+                    category: "web",
+                    tags: ["web", "owasp", "vulnerabilities"]
+                },
+                {
+                    id: 3,
+                    title: "SQL Injection Deep Dive",
+                    description: "Advanced SQL injection techniques including blind SQLi, time-based attacks, and WAF bypass methods. Practical examples from real-world scenarios.",
+                    date: "2024-02-08",
+                    category: "web",
+                    tags: ["web", "sql-injection", "database"]
+                },
+                {
+                    id: 4,
+                    title: "Network Traffic Analysis with Wireshark",
+                    description: "Essential techniques for analyzing network protocols, detecting anomalies, and investigating security incidents using Wireshark.",
+                    date: "2024-02-05",
+                    category: "network",
+                    tags: ["network", "wireshark", "forensics"]
+                },
+                {
+                    id: 5,
+                    title: "Introduction to Cryptography",
+                    description: "Understanding symmetric and asymmetric encryption, hashing algorithms, and common cryptographic implementations in security systems.",
+                    date: "2024-02-01",
+                    category: "crypto",
+                    tags: ["crypto", "encryption", "fundamentals"]
+                },
+                {
+                    id: 6,
+                    title: "Cross-Site Scripting (XSS) Exploitation",
+                    description: "Comprehensive guide to XSS attacks including reflected, stored, and DOM-based XSS. Bypass techniques and real-world exploitation scenarios.",
+                    date: "2024-01-28",
+                    category: "web",
+                    tags: ["web", "xss", "client-side"]
+                },
+                {
+                    id: 7,
+                    title: "Active Directory Penetration Testing",
+                    description: "Complete methodology for attacking Active Directory environments, from enumeration to domain compromise. Includes Kerberos attacks and credential dumping.",
+                    date: "2024-01-25",
+                    category: "network",
+                    tags: ["windows", "active-directory", "pentesting"]
+                },
+                {
+                    id: 8,
+                    title: "Buffer Overflow Basics",
+                    description: "Introduction to stack-based buffer overflows, including shellcode development and exploit writing fundamentals for beginners.",
+                    date: "2024-01-20",
+                    category: "linux",
+                    tags: ["binary", "exploitation", "memory"]
+                }
+            ];
+
+            const notesGrid = document.getElementById('notesGrid');
+            const emptyState = document.getElementById('emptyState');
+            const searchInput = document.getElementById('searchInput');
+            const resultCount = document.getElementById('resultCount');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+            const pagination = document.getElementById('pagination');
+
+            // Pagination state
+            const ITEMS_PER_PAGE = 5;
+            let currentPage = 1;
+            let filteredNotesCache = [];
+
+            // Mobile menu
+            if (mobileMenuBtn && navLinks) {
+                mobileMenuBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const isActive = navLinks.classList.toggle('active');
+                    mobileMenuBtn.classList.toggle('active');
+                });
+
+                navLinks.querySelectorAll('a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('active');
+                        mobileMenuBtn.classList.remove('active');
+                    });
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('nav')) {
+                        navLinks.classList.remove('active');
+                        mobileMenuBtn.classList.remove('active');
+                    }
+                });
+            }
+
+            function renderPagination(totalItems) {
+                const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+                
+                if (totalPages <= 1) {
+                    pagination.classList.add('hidden');
+                    return;
+                }
+
+                pagination.classList.remove('hidden');
+                pagination.innerHTML = '';
+
+                // Previous button
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'pagination-btn';
+                prevBtn.textContent = '←';
+                prevBtn.disabled = currentPage === 1;
+                prevBtn.onclick = function() {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        renderNotes();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                };
+                pagination.appendChild(prevBtn);
+
+                // Page numbers
+                const maxVisible = 5;
+                let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+                let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+                if (endPage - startPage < maxVisible - 1) {
+                    startPage = Math.max(1, endPage - maxVisible + 1);
+                }
+
+                // First page
+                if (startPage > 1) {
+                    const firstBtn = document.createElement('button');
+                    firstBtn.className = 'pagination-btn';
+                    firstBtn.textContent = '1';
+                    firstBtn.onclick = function() {
+                        currentPage = 1;
+                        renderNotes();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    };
+                    pagination.appendChild(firstBtn);
+
+                    if (startPage > 2) {
+                        const ellipsis = document.createElement('span');
+                        ellipsis.className = 'pagination-ellipsis';
+                        ellipsis.textContent = '...';
+                        pagination.appendChild(ellipsis);
+                    }
+                }
+
+                // Page buttons
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.className = 'pagination-btn' + (i === currentPage ? ' active' : '');
+                    pageBtn.textContent = i;
+                    pageBtn.onclick = function() {
+                        currentPage = i;
+                        renderNotes();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    };
+                    pagination.appendChild(pageBtn);
+                }
+
+                // Last page
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        const ellipsis = document.createElement('span');
+                        ellipsis.className = 'pagination-ellipsis';
+                        ellipsis.textContent = '...';
+                        pagination.appendChild(ellipsis);
+                    }
+
+                    const lastBtn = document.createElement('button');
+                    lastBtn.className = 'pagination-btn';
+                    lastBtn.textContent = totalPages;
+                    lastBtn.onclick = function() {
+                        currentPage = totalPages;
+                        renderNotes();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    };
+                    pagination.appendChild(lastBtn);
+                }
+
+                // Next button
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'pagination-btn';
+                nextBtn.textContent = '→';
+                nextBtn.disabled = currentPage === totalPages;
+                nextBtn.onclick = function() {
+                    if (currentPage < totalPages) {
+                        currentPage++;
+                        renderNotes();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                };
+                pagination.appendChild(nextBtn);
+            }
+
+            function renderNotes() {
+                let filteredNotes = notesData.slice();
+                const searchQuery = searchInput.value.toLowerCase();
+                
+                // Search filter
+                if (searchQuery) {
+                    filteredNotes = filteredNotes.filter(function(note) {
+                        return note.title.toLowerCase().includes(searchQuery) ||
+                               note.description.toLowerCase().includes(searchQuery) ||
+                               note.tags.some(function(tag) {
+                                   return tag.toLowerCase().includes(searchQuery);
+                               });
+                    });
+                }
+
+                // Category filter
+                const selectedCategories = Array.from(document.querySelectorAll('input[id^="cat-"]:checked'))
+                    .map(function(cb) { return cb.value; });
+                
+                if (selectedCategories.length > 0) {
+                    filteredNotes = filteredNotes.filter(function(note) {
+                        return selectedCategories.includes(note.category);
+                    });
+                }
+
+                // Sort - Always sort by date (newest first)
+                const sortValue = document.querySelector('input[name="sort"]:checked').value;
+                if (sortValue === 'newest' || sortValue === 'featured') {
+                    filteredNotes.sort(function(a, b) {
+                        return new Date(b.date) - new Date(a.date);
+                    });
+                } else if (sortValue === 'az') {
+                    filteredNotes.sort(function(a, b) {
+                        return a.title.localeCompare(b.title);
+                    });
+                }
+
+                // Cache filtered results
+                filteredNotesCache = filteredNotes;
+
+                // Pagination
+                const totalItems = filteredNotes.length;
+                const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+                const endIndex = startIndex + ITEMS_PER_PAGE;
+                const paginatedNotes = filteredNotes.slice(startIndex, endIndex);
+
+                resultCount.textContent = totalItems;
+                notesGrid.innerHTML = '';
+
+                if (totalItems === 0) {
+                    emptyState.classList.remove('hidden');
+                    notesGrid.classList.add('hidden');
+                    pagination.classList.add('hidden');
+                    return;
+                }
+
+                emptyState.classList.add('hidden');
+                notesGrid.classList.remove('hidden');
+
+                paginatedNotes.forEach(function(note) {
+                    const card = document.createElement('article');
+                    card.className = 'note-card';
+                    
+                    const tagsHTML = note.tags.map(function(tag) {
+                        return '<span class="note-tag">' + tag + '</span>';
+                    }).join('');
+                    
+                    card.innerHTML = `
+                        <div class="note-category">${note.category.toUpperCase()}</div>
+                        <h3 class="note-title">${note.title}</h3>
+                        <p class="note-description">${note.description}</p>
+                        <div class="note-tags">
+                            ${tagsHTML}
+                        </div>
+                    `;
+                    
+                    notesGrid.appendChild(card);
+                });
+
+                renderPagination(totalItems);
+            }
+
+            // Event listeners
+            searchInput.addEventListener('input', function() {
+                currentPage = 1;
+                renderNotes();
+            });
+            
+            document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(function(input) {
+                input.addEventListener('change', function() {
+                    currentPage = 1;
+                    renderNotes();
+                });
+            });
+
+            // Mobile filter toggle
+            const mobileFilterToggle = document.getElementById('mobileFilterToggle');
+            if (mobileFilterToggle) {
+                mobileFilterToggle.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    // Toggle all sidebar sections (Sort and Category)
+                    const sections = document.querySelectorAll('.sidebar-section');
+                    sections.forEach(function(section) {
+                        section.classList.toggle('show');
+                    });
+                });
+            }
+
+            renderNotes();
+        })();
+    </script>
+</body>
+</html>
