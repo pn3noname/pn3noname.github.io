@@ -321,6 +321,76 @@
             font-size: 0.875rem;
         }
 
+        /* ══ CALLOUTS (Obsidian-style) ══ */
+        .callout {
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin: 1.8rem 0;
+            border-left: 3px solid;
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .callout-icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 0.1rem;
+        }
+
+        .callout-content {
+            flex: 1;
+        }
+
+        .callout-title {
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.4rem;
+        }
+
+        .callout-body {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .callout-note {
+            background-color: rgba(104, 160, 200, 0.08);
+            border-color: var(--blue);
+        }
+
+        .callout-note .callout-title {
+            color: var(--blue);
+        }
+
+        .callout-warning {
+            background-color: rgba(201, 136, 91, 0.08);
+            border-color: var(--orange);
+        }
+
+        .callout-warning .callout-title {
+            color: var(--orange);
+        }
+
+        .callout-danger {
+            background-color: rgba(181, 101, 118, 0.08);
+            border-color: var(--purple);
+        }
+
+        .callout-danger .callout-title {
+            color: var(--purple);
+        }
+
+        .callout-tip {
+            background-color: rgba(5, 150, 105, 0.08);
+            border-color: #059669;
+        }
+
+        .callout-tip .callout-title {
+            color: #059669;
+        }
+
         /* ══ TOC SIDEBAR ══ */
         .toc-sidebar {
             position: sticky;
@@ -594,8 +664,14 @@
         }
 
         function parseMarkdown(md) {
-            // Handle Obsidian callouts before passing to marked
-            md = md.replace(/>\s*\[!(NOTE|INFO|WARNING|TIP|IMPORTANT|DANGER)\](.*?)\n((?:>.*\n?)*)/gi, function(match, type, title, content) {
+            // First, use marked.js to parse standard markdown
+            let html = marked.parse(md, {
+                breaks: true,
+                gfm: true
+            });
+
+            // Then process Obsidian callouts in the HTML output
+            html = html.replace(/<blockquote>\s*<p>\[!(NOTE|INFO|WARNING|TIP|IMPORTANT|DANGER)\](.*?)<\/p>([\s\S]*?)<\/blockquote>/gi, function(match, type, title, content) {
                 const typeMap = {
                     'NOTE': 'note',
                     'INFO': 'note',
@@ -613,19 +689,17 @@
                 const calloutType = typeMap[type.toUpperCase()] || 'note';
                 const icon = iconMap[calloutType] || '📘';
                 const calloutTitle = title.trim() || type;
-                const calloutContent = content.replace(/^>\s*/gm, '').trim();
                 
                 return `<div class="callout callout-${calloutType}">
                     <div class="callout-icon">${icon}</div>
                     <div class="callout-content">
                         <div class="callout-title">${calloutTitle}</div>
-                        <div class="callout-body">${calloutContent}</div>
+                        <div class="callout-body">${content}</div>
                     </div>
                 </div>`;
             });
 
-            // Use marked.js for the rest
-            return marked.parse(md);
+            return html;
         }
 
         function buildTOC(content) {
