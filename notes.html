@@ -393,6 +393,19 @@
             letter-spacing: -0.02em;
         }
 
+        .note-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .note-date {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-family: 'Source Code Pro', monospace;
+        }
+
         .note-description {
             font-size: 0.95rem;
             color: var(--text-secondary);
@@ -754,24 +767,6 @@
             </button>
 
             <div class="sidebar-section">
-                <h3>Sort</h3>
-                <div class="filter-list">
-                    <div class="filter-item">
-                        <input type="radio" id="sort-featured" name="sort" value="featured">
-                        <label for="sort-featured">Featured</label>
-                    </div>
-                    <div class="filter-item">
-                        <input type="radio" id="sort-newest" name="sort" value="newest" checked>
-                        <label for="sort-newest">Newest</label>
-                    </div>
-                    <div class="filter-item">
-                        <input type="radio" id="sort-az" name="sort" value="az">
-                        <label for="sort-az">A-Z</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sidebar-section">
                 <h3>Category</h3>
                 <div class="filter-list">
                     <div class="filter-item">
@@ -793,6 +788,24 @@
                     <div class="filter-item">
                         <input type="checkbox" id="cat-forensics" value="forensics">
                         <label for="cat-forensics">Forensics</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Sort</h3>
+                <div class="filter-list">
+                    <div class="filter-item">
+                        <input type="radio" id="sort-featured" name="sort" value="featured">
+                        <label for="sort-featured">Featured</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="radio" id="sort-newest" name="sort" value="newest" checked>
+                        <label for="sort-newest">Newest</label>
+                    </div>
+                    <div class="filter-item">
+                        <input type="radio" id="sort-az" name="sort" value="az">
+                        <label for="sort-az">A-Z</label>
                     </div>
                 </div>
             </div>
@@ -1111,14 +1124,26 @@
                 paginatedNotes.forEach(function(note) {
                     const card = document.createElement('article');
                     card.className = 'note-card';
+                    if (note.slug) {
+                        card.style.cursor = 'pointer';
+                        card.addEventListener('click', function() {
+                            window.location.href = 'note.html?slug=' + note.slug;
+                        });
+                    }
                     
                     const tagsHTML = note.tags.map(function(tag) {
                         return '<span class="note-tag">' + tag + '</span>';
                     }).join('');
+
+                    const dateObj = new Date(note.date);
+                    const formattedDate = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
                     
                     card.innerHTML = `
                         <div class="note-category">${note.category.toUpperCase()}</div>
                         <h3 class="note-title">${note.title}</h3>
+                        <div class="note-meta">
+                            <span class="note-date">📅 ${formattedDate}</span>
+                        </div>
                         <p class="note-description">${note.description}</p>
                         <div class="note-tags">
                             ${tagsHTML}
