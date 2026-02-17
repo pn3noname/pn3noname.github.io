@@ -546,6 +546,7 @@
     </footer>
 
     <script src="notes-data.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
     <script>
     // Mobile menu toggle
     (function() {
@@ -593,54 +594,61 @@
         }
 
         function parseMarkdown(md) {
-            let html = md;
-            
-            html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, function(match, lang, code) {
-                return '<pre' + (lang ? ' data-lang="' + lang + '"' : '') + '><code>' + 
-                       code.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code></pre>';
+            // Handle Obsidian callouts before passing to marked
+            md = md.replace(/>\s*\[!(NOTE|INFO|WARNING|TIP|IMPORTANT|DANGER)\](.*?)\n((?:>.*\n?)*)/gi, function(match, type, title, content) {
+                const typeMap = {
+                    'NOTE': 'note',
+                    'INFO': 'note',
+                    'WARNING': 'warning',
+                    'DANGER': 'danger',
+                    'TIP': 'tip',
+                    'IMPORTANT': 'warning'
+                };
+                const iconMap = {
+                    'note': '📘',
+                    'warning': '⚠️',
+                    'danger': '🚫',
+                    'tip': '💡'
+                };
+                const calloutType = typeMap[type.toUpperCase()] || 'note';
+                const icon = iconMap[calloutType] || '📘';
+                const calloutTitle = title.trim() || type;
+                const calloutContent = content.replace(/^>\s*/gm, '').trim();
+                
+                return `<div class="callout callout-${calloutType}">
+                    <div class="callout-icon">${icon}</div>
+                    <div class="callout-content">
+                        <div class="callout-title">${calloutTitle}</div>
+                        <div class="callout-body">${calloutContent}</div>
+                    </div>
+                </div>`;
             });
-            
-            html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-            html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
-            
-            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-            html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-            
-            html = html.replace(/^\* (.+)$/gim, '<li>$1</li>');
-            html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
-            
-            html = html.split('\n\n').map(p => {
-                if (!p.match(/^<(h|ul|pre)/)) return '<p>' + p + '</p>';
-                return p;
-            }).join('\n');
-            
-            return html;
+
+            // Use marked.js for the rest
+            return marked.parse(md);
         }
 
         function buildTOC(content) {
             const tocList = document.getElementById('tocList');
-            const headers = content.match(/<h([234])>(.*?)<\/h\1>/g);
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = content;
+            const headers = tempDiv.querySelectorAll('h2, h3, h4');
             
-            if (!headers) return;
+            if (headers.length === 0) return;
             
             headers.forEach((header, idx) => {
-                const level = header.match(/<h([234])>/)[1];
-                const text = header.replace(/<[^>]+>/g, '');
+                const level = header.tagName.toLowerCase();
+                const text = header.textContent;
                 const id = 'heading-' + idx;
-                
-                const targetHeader = content.split(header)[0].length;
-                document.getElementById('articleBody').innerHTML = 
-                    document.getElementById('articleBody').innerHTML.replace(
-                        header, 
-                        header.replace('>', ' id="' + id + '">')
-                    );
+                header.id = id;
                 
                 const li = document.createElement('li');
-                li.className = 'toc-item h' + level;
+                li.className = 'toc-item ' + level;
                 li.innerHTML = '<a href="#' + id + '">' + text + '</a>';
                 tocList.appendChild(li);
             });
+
+            document.getElementById('articleBody').innerHTML = tempDiv.innerHTML;
         }
 
         function renderNote() {
@@ -671,9 +679,8 @@
                 tagsDiv.appendChild(span);
             });
 
-            const bodyDiv = document.getElementById('articleBody');
-            bodyDiv.innerHTML = parseMarkdown(note.content || '');
-            buildTOC(bodyDiv.innerHTML);
+            const parsedContent = parseMarkdown(note.content || '');
+            buildTOC(parsedContent);
         }
 
         renderNote();
