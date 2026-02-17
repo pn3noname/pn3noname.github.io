@@ -135,7 +135,7 @@
         .page-wrapper {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 3rem 2rem 6rem 2rem;
+            padding: 2rem 2rem 6rem 2rem;
             display: grid;
             grid-template-columns: 1fr 220px;
             gap: 4rem;
@@ -319,9 +319,13 @@
         .next-note-link:hover .next-note-arrow { color: var(--blue); transform: translateX(3px); }
 
         /* ── TOC Sidebar ── */
-        .toc-sidebar { position: sticky; top: 100px; }
+        .toc-sidebar {
+            position: sticky;
+            top: 100px;
+            padding-top: 0.35rem; /* breadcrumb과 수평 정렬 */
+        }
 
-        .back-to-notes { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--text-secondary); text-decoration: none; padding: 0.6rem 0.5rem; border-radius: 6px; transition: all 0.2s; margin-bottom: 1rem; font-weight: 500; }
+        .back-to-notes { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--text-secondary); text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 6px; transition: all 0.2s; margin-bottom: 1.85rem; font-weight: 500; }
         .back-to-notes:hover { color: var(--blue); background-color: rgba(104, 160, 200, 0.07); }
         .back-to-notes svg { width: 14px; height: 14px; }
 
