@@ -393,19 +393,6 @@
             letter-spacing: -0.02em;
         }
 
-        .note-meta {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .note-date {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            font-family: 'Source Code Pro', monospace;
-        }
-
         .note-description {
             font-size: 0.95rem;
             color: var(--text-secondary);
@@ -767,32 +754,6 @@
             </button>
 
             <div class="sidebar-section">
-                <h3>Category</h3>
-                <div class="filter-list">
-                    <div class="filter-item">
-                        <input type="checkbox" id="cat-web" value="web">
-                        <label for="cat-web">Web Security</label>
-                    </div>
-                    <div class="filter-item">
-                        <input type="checkbox" id="cat-linux" value="linux">
-                        <label for="cat-linux">Linux</label>
-                    </div>
-                    <div class="filter-item">
-                        <input type="checkbox" id="cat-network" value="network">
-                        <label for="cat-network">Network</label>
-                    </div>
-                    <div class="filter-item">
-                        <input type="checkbox" id="cat-crypto" value="crypto">
-                        <label for="cat-crypto">Cryptography</label>
-                    </div>
-                    <div class="filter-item">
-                        <input type="checkbox" id="cat-forensics" value="forensics">
-                        <label for="cat-forensics">Forensics</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sidebar-section">
                 <h3>Sort</h3>
                 <div class="filter-list">
                     <div class="filter-item">
@@ -807,6 +768,13 @@
                         <input type="radio" id="sort-az" name="sort" value="az">
                         <label for="sort-az">A-Z</label>
                     </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Category</h3>
+                <div class="filter-list" id="categoryFilterList">
+                    <!-- 카테고리 필터는 notesData에서 동적 생성 -->
                 </div>
             </div>
         </aside>
@@ -853,91 +821,61 @@
         </p>
     </footer>
 
+    <script src="notes-data.js"></script>
     <script>
         (function() {
             'use strict';
 
-            const notesData = [
-                {
-                    id: 1,
-                    title: "Linux Privilege Escalation Techniques",
-                    description: "Comprehensive guide to Linux privilege escalation methods including SUID exploitation, Cron abuse, and kernel exploits. Practical techniques for penetration testing engagements.",
-                    date: "2024-02-12",
-                    category: "linux",
-                    tags: ["linux", "privilege-escalation", "pentesting"]
-                },
-                {
-                    id: 2,
-                    title: "OWASP Top 10 2024 Summary",
-                    description: "Latest OWASP Top 10 vulnerabilities with detailed explanations and hands-on examples. Building a strong foundation in web application security.",
-                    date: "2024-02-10",
-                    category: "web",
-                    tags: ["web", "owasp", "vulnerabilities"]
-                },
-                {
-                    id: 3,
-                    title: "SQL Injection Deep Dive",
-                    description: "Advanced SQL injection techniques including blind SQLi, time-based attacks, and WAF bypass methods. Practical examples from real-world scenarios.",
-                    date: "2024-02-08",
-                    category: "web",
-                    tags: ["web", "sql-injection", "database"]
-                },
-                {
-                    id: 4,
-                    title: "Network Traffic Analysis with Wireshark",
-                    description: "Essential techniques for analyzing network protocols, detecting anomalies, and investigating security incidents using Wireshark.",
-                    date: "2024-02-05",
-                    category: "network",
-                    tags: ["network", "wireshark", "forensics"]
-                },
-                {
-                    id: 5,
-                    title: "Introduction to Cryptography",
-                    description: "Understanding symmetric and asymmetric encryption, hashing algorithms, and common cryptographic implementations in security systems.",
-                    date: "2024-02-01",
-                    category: "crypto",
-                    tags: ["crypto", "encryption", "fundamentals"]
-                },
-                {
-                    id: 6,
-                    title: "Cross-Site Scripting (XSS) Exploitation",
-                    description: "Comprehensive guide to XSS attacks including reflected, stored, and DOM-based XSS. Bypass techniques and real-world exploitation scenarios.",
-                    date: "2024-01-28",
-                    category: "web",
-                    tags: ["web", "xss", "client-side"]
-                },
-                {
-                    id: 7,
-                    title: "Active Directory Penetration Testing",
-                    description: "Complete methodology for attacking Active Directory environments, from enumeration to domain compromise. Includes Kerberos attacks and credential dumping.",
-                    date: "2024-01-25",
-                    category: "network",
-                    tags: ["windows", "active-directory", "pentesting"]
-                },
-                {
-                    id: 8,
-                    title: "Buffer Overflow Basics",
-                    description: "Introduction to stack-based buffer overflows, including shellcode development and exploit writing fundamentals for beginners.",
-                    date: "2024-01-20",
-                    category: "linux",
-                    tags: ["binary", "exploitation", "memory"]
-                }
-            ];
+            // notes-data.js 로드 실패 시 안내
+            if (typeof notesData === 'undefined' || !Array.isArray(notesData)) {
+                console.error('notes-data.js 로드 실패 또는 데이터 없음');
+                document.getElementById('resultCount').textContent = '0';
+                document.getElementById('emptyState').classList.remove('hidden');
+                return;
+            }
 
-            const notesGrid = document.getElementById('notesGrid');
-            const emptyState = document.getElementById('emptyState');
-            const searchInput = document.getElementById('searchInput');
-            const resultCount = document.getElementById('resultCount');
+            const notesGrid    = document.getElementById('notesGrid');
+            const emptyState   = document.getElementById('emptyState');
+            const searchInput  = document.getElementById('searchInput');
+            const resultCount  = document.getElementById('resultCount');
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const navLinks = document.getElementById('navLinks');
-            const pagination = document.getElementById('pagination');
+            const navLinks     = document.getElementById('navLinks');
+            const pagination   = document.getElementById('pagination');
 
             // Pagination state
             const ITEMS_PER_PAGE = 5;
             let currentPage = 1;
             let filteredNotesCache = [];
 
-            // Mobile menu
+            // ── 카테고리 필터 동적 생성 ─────────────────────────────────
+            function buildCategoryFilters() {
+                const filterList = document.getElementById('categoryFilterList');
+                if (!filterList) return;
+
+                // notesData에서 유니크 카테고리 추출 후 알파벳 정렬
+                const categories = [...new Set(
+                    notesData.map(n => n.category).filter(Boolean)
+                )].sort();
+
+                filterList.innerHTML = categories.map(function(cat) {
+                    const id  = 'cat-' + cat.toLowerCase().replace(/[^a-z0-9]/g, '-');
+                    return `
+                        <div class="filter-item">
+                            <input type="checkbox" id="${id}" value="${cat}">
+                            <label for="${id}">${cat}</label>
+                        </div>`;
+                }).join('');
+
+                // 동적으로 생성된 체크박스에도 이벤트 바인딩
+                filterList.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+                    cb.addEventListener('change', function() {
+                        currentPage = 1;
+                        renderNotes();
+                    });
+                });
+            }
+
+            // ── Mobile menu ──────────────────────────────────────────────
             if (mobileMenuBtn && navLinks) {
                 mobileMenuBtn.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -960,9 +898,10 @@
                 });
             }
 
+            // ── Pagination ───────────────────────────────────────────────
             function renderPagination(totalItems) {
                 const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-                
+
                 if (totalPages <= 1) {
                     pagination.classList.add('hidden');
                     return;
@@ -971,142 +910,106 @@
                 pagination.classList.remove('hidden');
                 pagination.innerHTML = '';
 
-                // Previous button
                 const prevBtn = document.createElement('button');
                 prevBtn.className = 'pagination-btn';
                 prevBtn.textContent = '←';
                 prevBtn.disabled = currentPage === 1;
                 prevBtn.onclick = function() {
-                    if (currentPage > 1) {
-                        currentPage--;
-                        renderNotes();
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
+                    if (currentPage > 1) { currentPage--; renderNotes(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
                 };
                 pagination.appendChild(prevBtn);
 
-                // Page numbers
                 const maxVisible = 5;
                 let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-                let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+                let endPage   = Math.min(totalPages, startPage + maxVisible - 1);
+                if (endPage - startPage < maxVisible - 1) startPage = Math.max(1, endPage - maxVisible + 1);
 
-                if (endPage - startPage < maxVisible - 1) {
-                    startPage = Math.max(1, endPage - maxVisible + 1);
-                }
-
-                // First page
                 if (startPage > 1) {
                     const firstBtn = document.createElement('button');
                     firstBtn.className = 'pagination-btn';
                     firstBtn.textContent = '1';
-                    firstBtn.onclick = function() {
-                        currentPage = 1;
-                        renderNotes();
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    };
+                    firstBtn.onclick = function() { currentPage = 1; renderNotes(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
                     pagination.appendChild(firstBtn);
-
                     if (startPage > 2) {
-                        const ellipsis = document.createElement('span');
-                        ellipsis.className = 'pagination-ellipsis';
-                        ellipsis.textContent = '...';
-                        pagination.appendChild(ellipsis);
+                        const el = document.createElement('span');
+                        el.className = 'pagination-ellipsis';
+                        el.textContent = '...';
+                        pagination.appendChild(el);
                     }
                 }
 
-                // Page buttons
                 for (let i = startPage; i <= endPage; i++) {
                     const pageBtn = document.createElement('button');
                     pageBtn.className = 'pagination-btn' + (i === currentPage ? ' active' : '');
                     pageBtn.textContent = i;
-                    pageBtn.onclick = function() {
-                        currentPage = i;
-                        renderNotes();
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    };
+                    pageBtn.onclick = (function(page) {
+                        return function() { currentPage = page; renderNotes(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+                    })(i);
                     pagination.appendChild(pageBtn);
                 }
 
-                // Last page
                 if (endPage < totalPages) {
                     if (endPage < totalPages - 1) {
-                        const ellipsis = document.createElement('span');
-                        ellipsis.className = 'pagination-ellipsis';
-                        ellipsis.textContent = '...';
-                        pagination.appendChild(ellipsis);
+                        const el = document.createElement('span');
+                        el.className = 'pagination-ellipsis';
+                        el.textContent = '...';
+                        pagination.appendChild(el);
                     }
-
                     const lastBtn = document.createElement('button');
                     lastBtn.className = 'pagination-btn';
                     lastBtn.textContent = totalPages;
-                    lastBtn.onclick = function() {
-                        currentPage = totalPages;
-                        renderNotes();
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    };
+                    lastBtn.onclick = function() { currentPage = totalPages; renderNotes(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
                     pagination.appendChild(lastBtn);
                 }
 
-                // Next button
                 const nextBtn = document.createElement('button');
                 nextBtn.className = 'pagination-btn';
                 nextBtn.textContent = '→';
                 nextBtn.disabled = currentPage === totalPages;
                 nextBtn.onclick = function() {
-                    if (currentPage < totalPages) {
-                        currentPage++;
-                        renderNotes();
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
+                    if (currentPage < totalPages) { currentPage++; renderNotes(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
                 };
                 pagination.appendChild(nextBtn);
             }
 
+            // ── Render notes ─────────────────────────────────────────────
             function renderNotes() {
                 let filteredNotes = notesData.slice();
-                const searchQuery = searchInput.value.toLowerCase();
-                
-                // Search filter
+                const searchQuery = searchInput.value.toLowerCase().trim();
+
+                // 검색 필터
                 if (searchQuery) {
                     filteredNotes = filteredNotes.filter(function(note) {
                         return note.title.toLowerCase().includes(searchQuery) ||
-                               note.description.toLowerCase().includes(searchQuery) ||
-                               note.tags.some(function(tag) {
-                                   return tag.toLowerCase().includes(searchQuery);
-                               });
+                               (note.description || '').toLowerCase().includes(searchQuery) ||
+                               note.tags.some(function(tag) { return tag.toLowerCase().includes(searchQuery); });
                     });
                 }
 
-                // Category filter
-                const selectedCategories = Array.from(document.querySelectorAll('input[id^="cat-"]:checked'))
-                    .map(function(cb) { return cb.value; });
-                
+                // 카테고리 필터 (동적으로 생성된 체크박스 기준)
+                const selectedCategories = Array.from(
+                    document.querySelectorAll('#categoryFilterList input[type="checkbox"]:checked')
+                ).map(function(cb) { return cb.value; });
+
                 if (selectedCategories.length > 0) {
                     filteredNotes = filteredNotes.filter(function(note) {
                         return selectedCategories.includes(note.category);
                     });
                 }
 
-                // Sort - Always sort by date (newest first)
+                // 정렬
                 const sortValue = document.querySelector('input[name="sort"]:checked').value;
                 if (sortValue === 'newest' || sortValue === 'featured') {
-                    filteredNotes.sort(function(a, b) {
-                        return new Date(b.date) - new Date(a.date);
-                    });
+                    filteredNotes.sort(function(a, b) { return new Date(b.date) - new Date(a.date); });
                 } else if (sortValue === 'az') {
-                    filteredNotes.sort(function(a, b) {
-                        return a.title.localeCompare(b.title);
-                    });
+                    filteredNotes.sort(function(a, b) { return a.title.localeCompare(b.title); });
                 }
 
-                // Cache filtered results
                 filteredNotesCache = filteredNotes;
 
-                // Pagination
-                const totalItems = filteredNotes.length;
-                const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-                const endIndex = startIndex + ITEMS_PER_PAGE;
-                const paginatedNotes = filteredNotes.slice(startIndex, endIndex);
+                const totalItems    = filteredNotes.length;
+                const startIndex    = (currentPage - 1) * ITEMS_PER_PAGE;
+                const paginatedNotes = filteredNotes.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
                 resultCount.textContent = totalItems;
                 notesGrid.innerHTML = '';
@@ -1124,45 +1027,44 @@
                 paginatedNotes.forEach(function(note) {
                     const card = document.createElement('article');
                     card.className = 'note-card';
-                    if (note.slug) {
-                        card.style.cursor = 'pointer';
-                        card.addEventListener('click', function() {
-                            window.location.href = 'note.html?slug=' + note.slug;
-                        });
-                    }
-                    
-                    const tagsHTML = note.tags.map(function(tag) {
+                    card.style.cursor = 'pointer';
+
+                    const tagsHTML = (note.tags || []).map(function(tag) {
                         return '<span class="note-tag">' + tag + '</span>';
                     }).join('');
 
-                    const dateObj = new Date(note.date);
-                    const formattedDate = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-                    
+                    const dateFormatted = note.date
+                        ? new Date(note.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+                        : '';
+
                     card.innerHTML = `
-                        <div class="note-category">${note.category.toUpperCase()}</div>
+                        <div class="note-category">${(note.category || '').toUpperCase()}</div>
                         <h3 class="note-title">${note.title}</h3>
-                        <div class="note-meta">
-                            <span class="note-date">${formattedDate}</span>
-                        </div>
-                        <p class="note-description">${note.description}</p>
-                        <div class="note-tags">
-                            ${tagsHTML}
-                        </div>
+                        <p class="note-date" style="font-size:0.82rem; color:var(--text-secondary); font-family:'Source Code Pro',monospace; margin-bottom:0.8rem;">${dateFormatted}</p>
+                        <p class="note-description">${note.description || ''}</p>
+                        <div class="note-tags">${tagsHTML}</div>
                     `;
-                    
+
+                    // 카드 클릭 → note.html?slug=...
+                    if (note.slug) {
+                        card.addEventListener('click', function() {
+                            window.location.href = 'note.html?slug=' + encodeURIComponent(note.slug);
+                        });
+                    }
+
                     notesGrid.appendChild(card);
                 });
 
                 renderPagination(totalItems);
             }
 
-            // Event listeners
+            // ── Event listeners ──────────────────────────────────────────
             searchInput.addEventListener('input', function() {
                 currentPage = 1;
                 renderNotes();
             });
-            
-            document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(function(input) {
+
+            document.querySelectorAll('input[type="radio"]').forEach(function(input) {
                 input.addEventListener('change', function() {
                     currentPage = 1;
                     renderNotes();
@@ -1174,15 +1076,16 @@
             if (mobileFilterToggle) {
                 mobileFilterToggle.addEventListener('click', function() {
                     this.classList.toggle('active');
-                    // Toggle all sidebar sections (Sort and Category)
-                    const sections = document.querySelectorAll('.sidebar-section');
-                    sections.forEach(function(section) {
+                    document.querySelectorAll('.sidebar-section').forEach(function(section) {
                         section.classList.toggle('show');
                     });
                 });
             }
 
+            // ── Init ─────────────────────────────────────────────────────
+            buildCategoryFilters();
             renderNotes();
+
         })();
     </script>
 </body>
