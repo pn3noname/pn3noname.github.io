@@ -902,8 +902,10 @@
             'use strict';
 
             // notesData는 notes-data.js에서 전역 var로 로드됨
-            // 로드 실패 시 빈 배열로 폴백
-            if (typeof notesData === 'undefined') { var notesData = []; }
+            // IIFE 스코프 밖의 전역 변수이므로 window로 명시 접근
+            var notesData = (window.notesData && Array.isArray(window.notesData))
+                ? window.notesData
+                : [];
 
             const resourcesData = [
                 {
