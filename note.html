@@ -143,14 +143,14 @@
             display: grid;
             grid-template-columns: 1fr 220px;
             gap: 4rem;
-            align-items: center;
+            align-items: start;
             margin-bottom: 1.5rem;
         }
-        
+
         .top-row > .breadcrumb {
             justify-self: start;
         }
-        
+
         .top-row > .back-to-notes {
             justify-self: start;
         }
@@ -170,8 +170,7 @@
             justify-content: flex-start;
             font-size: 0;
             color: var(--text-secondary);
-            height: 2rem;
-            margin-bottom: 2rem;
+            width: fit-content;
             flex-wrap: nowrap;
         }
 
@@ -347,9 +346,8 @@
         }
 
         .back-to-notes {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: flex-start;
             gap: 0.5rem;
             font-size: 0.82rem;
             color: var(--text-secondary);
