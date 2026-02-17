@@ -136,6 +136,19 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem 2rem 6rem 2rem;
+        }
+
+        /* breadcrumb ↔ back-to-notes 같은 행 */
+        .top-row {
+            display: grid;
+            grid-template-columns: 1fr 220px;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        /* article ↔ toc-card 같은 행 */
+        .content-row {
             display: grid;
             grid-template-columns: 1fr 220px;
             gap: 4rem;
@@ -328,16 +341,16 @@
         .back-to-notes {
             display: flex;
             align-items: center;
+            justify-content: flex-end;
             gap: 0.5rem;
             font-size: 0.82rem;
             color: var(--text-secondary);
             text-decoration: none;
-            height: 2rem;
-            margin-bottom: 2rem;
             border-radius: 6px;
             transition: all 0.2s;
             font-weight: 500;
-            padding: 0 0.5rem;
+            padding: 0.3rem 0.5rem;
+            white-space: nowrap;
         }
         .back-to-notes:hover { color: var(--blue); background-color: rgba(104, 160, 200, 0.07); }
         .back-to-notes svg { width: 14px; height: 14px; flex-shrink: 0; }
@@ -370,7 +383,9 @@
 
         /* ── Responsive ── */
         @media (max-width: 1024px) {
-            .page-wrapper { grid-template-columns: 1fr; gap: 2rem; }
+            .top-row { grid-template-columns: 1fr; gap: 0; }
+            .top-row .back-to-notes { display: none; }
+            .content-row { grid-template-columns: 1fr; gap: 2rem; }
             .toc-sidebar { display: none; }
         }
 
@@ -506,45 +521,51 @@
 
     <div class="page-wrapper">
 
-        <main>
+        <!-- 상단 행: breadcrumb ↔ back-to-notes 수평 정렬 -->
+        <div class="top-row">
             <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg><a href="notes.html">Learning Notes</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg><span class="current" id="breadcrumbTitle">Loading...</span></nav>
-
-            <div class="article-wrap">
-                <header class="article-header" id="articleHeader">
-                    <div class="article-category" id="articleCategory">—</div>
-                    <h1 class="article-title" id="articleTitle">Loading note...</h1>
-                    <span class="meta-item" id="articleDate">—</span>
-                    <div class="article-tags" id="articleTags"></div>
-                </header>
-
-                <div class="article-body" id="articleBody">
-                    <!-- Content injected by JS -->
-                </div>
-            </div>
-
-            <nav class="next-note-nav hidden" id="nextNoteNav" aria-label="Next note">
-                <a href="#" class="next-note-link" id="nextNoteLink">
-                    <span class="next-note-label">Next Note</span>
-                    <span class="next-note-row">
-                        <span class="next-note-title" id="nextNoteTitle"></span>
-                        <span class="next-note-arrow">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                        </span>
-                    </span>
-                </a>
-            </nav>
-        </main>
-
-        <aside class="toc-sidebar">
             <a href="notes.html" class="back-to-notes">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
                 Back to Notes
             </a>
-            <div class="toc-card" id="tocCard">
-                <div class="toc-title">On this page</div>
-                <ul class="toc-list" id="tocList"></ul>
-            </div>
-        </aside>
+        </div>
+
+        <!-- 콘텐츠 행: article ↔ toc-card 수평 정렬 -->
+        <div class="content-row">
+            <main>
+                <div class="article-wrap">
+                    <header class="article-header" id="articleHeader">
+                        <div class="article-category" id="articleCategory">—</div>
+                        <h1 class="article-title" id="articleTitle">Loading note...</h1>
+                        <span class="meta-item" id="articleDate">—</span>
+                        <div class="article-tags" id="articleTags"></div>
+                    </header>
+
+                    <div class="article-body" id="articleBody">
+                        <!-- Content injected by JS -->
+                    </div>
+                </div>
+
+                <nav class="next-note-nav hidden" id="nextNoteNav" aria-label="Next note">
+                    <a href="#" class="next-note-link" id="nextNoteLink">
+                        <span class="next-note-label">Next Note</span>
+                        <span class="next-note-row">
+                            <span class="next-note-title" id="nextNoteTitle"></span>
+                            <span class="next-note-arrow">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                            </span>
+                        </span>
+                    </a>
+                </nav>
+            </main>
+
+            <aside class="toc-sidebar">
+                <div class="toc-card" id="tocCard">
+                    <div class="toc-title">On this page</div>
+                    <ul class="toc-list" id="tocList"></ul>
+                </div>
+            </aside>
+        </div>
 
     </div>
 
