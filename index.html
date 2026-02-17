@@ -896,49 +896,16 @@
         </p>
     </footer>
 
+    <script src="notes-data.js"></script>
     <script>
         (function() {
             'use strict';
 
-            // Sample data - Replace with your actual data
-            const notesData = [
-                {
-                    title: "Linux Privilege Escalation Techniques",
-                    date: "2024-02-12",
-                    description: "Comprehensive guide to Linux privilege escalation methods including SUID exploitation, Cron abuse, and kernel exploits. Practical techniques for penetration testing engagements.",
-                    tags: ["linux", "privilege-escalation"]
-                },
-                {
-                    title: "OWASP Top 10 2024 Summary",
-                    date: "2024-02-10",
-                    description: "Latest OWASP Top 10 vulnerabilities with detailed explanations and hands-on examples. Building a strong foundation in web application security.",
-                    tags: ["web", "owasp"]
-                },
-                {
-                    title: "SQL Injection Deep Dive",
-                    date: "2024-02-08",
-                    description: "Advanced SQL injection techniques including blind SQLi, time-based attacks, and WAF bypass methods.",
-                    tags: ["web", "sql-injection"]
-                },
-                {
-                    title: "Network Traffic Analysis",
-                    date: "2024-02-05",
-                    description: "Essential techniques for analyzing network protocols and detecting anomalies using Wireshark.",
-                    tags: ["network", "wireshark"]
-                },
-                {
-                    title: "Introduction to Cryptography",
-                    date: "2024-02-01",
-                    description: "Understanding symmetric and asymmetric encryption, hashing algorithms, and cryptographic implementations.",
-                    tags: ["crypto", "fundamentals"]
-                },
-                {
-                    title: "Cross-Site Scripting (XSS)",
-                    date: "2024-01-28",
-                    description: "Comprehensive guide to XSS attacks including reflected, stored, and DOM-based XSS.",
-                    tags: ["web", "xss"]
-                }
-            ];
+            // notesData는 notes-data.js에서 로드 (자동 생성)
+            // typeof 체크로 로드 실패 시 빈 배열 사용
+            const notesData = (typeof window.notesData !== 'undefined' && Array.isArray(window.notesData))
+                ? window.notesData
+                : [];
 
             const resourcesData = [
                 {
@@ -1030,29 +997,46 @@
                 });
             }
 
-            // Render preview (max 4 items)
             function renderNotesPreview() {
                 const notesPreview = document.getElementById('notesPreview');
+                if (!notesPreview) return;
+
+                if (notesData.length === 0) {
+                    notesPreview.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-secondary);">No notes yet. Check back soon!</p>';
+                    return;
+                }
+
                 const preview = notesData.slice(0, 4);
                 
                 preview.forEach(function(note) {
                     const card = document.createElement('article');
                     card.className = 'card';
+                    if (note.slug) card.style.cursor = 'pointer';
                     
-                    const tagsHTML = note.tags.map(function(tag) {
+                    const tagsHTML = (note.tags || []).map(function(tag) {
                         return '<span class="tag ' + tag + '">' + tag + '</span>';
                     }).join('');
+
+                    const dateFormatted = note.date
+                        ? new Date(note.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+                        : note.date;
                     
                     card.innerHTML = `
                         <h3>${note.title}</h3>
                         <div class="card-meta">
-                            <span>📅 ${note.date}</span>
+                            <span>📅 ${dateFormatted}</span>
                         </div>
-                        <p>${note.description}</p>
+                        <p>${note.description || ''}</p>
                         <div class="tags">
                             ${tagsHTML}
                         </div>
                     `;
+
+                    if (note.slug) {
+                        card.addEventListener('click', function() {
+                            window.location.href = 'note.html?slug=' + encodeURIComponent(note.slug);
+                        });
+                    }
                     
                     notesPreview.appendChild(card);
                 });
