@@ -901,11 +901,9 @@
         (function() {
             'use strict';
 
-            // notesData는 notes-data.js에서 로드 (자동 생성)
-            // notes-data.js 로드 실패 시 빈 배열 사용
-            var notesData = (typeof notesData !== 'undefined' && Array.isArray(notesData))
-                ? notesData
-                : [];
+            // notesData는 notes-data.js에서 전역 var로 로드됨
+            // 로드 실패 시 빈 배열로 폴백
+            if (typeof notesData === 'undefined') { var notesData = []; }
 
             const resourcesData = [
                 {
