@@ -2,7 +2,7 @@
 // ⚠️  이 파일은 GitHub Actions가 자동 생성합니다. 직접 수정하지 마세요.
 // Generated: auto by scripts/build_notes.py
 
-const notesData = [
+var notesData = [
   {
     "slug": "1-basics",
     "title": "1. Basics",
