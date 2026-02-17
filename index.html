@@ -902,9 +902,9 @@
             'use strict';
 
             // notesData는 notes-data.js에서 로드 (자동 생성)
-            // typeof 체크로 로드 실패 시 빈 배열 사용
-            const notesData = (typeof window.notesData !== 'undefined' && Array.isArray(window.notesData))
-                ? window.notesData
+            // notes-data.js 로드 실패 시 빈 배열 사용
+            var notesData = (typeof notesData !== 'undefined' && Array.isArray(notesData))
+                ? notesData
                 : [];
 
             const resourcesData = [
