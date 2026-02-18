@@ -749,73 +749,122 @@
 
         /**
          * Extract Obsidian-style callouts from raw markdown BEFORE passing to marked.js.
-         * 
-         * Callout format in markdown:
-         * > [!TYPE] Optional title
-         * > content line 1
-         * > content line 2
-         * > ...
-         * 
-         * Strategy:
-         * 1. Protect fenced code blocks from being touched
-         * 2. Find callout blocks (lines starting with ">")
-         * 3. Extract type, title, and body
-         * 4. Parse body content with marked.js independently
-         * 5. Replace with callout HTML placeholder
-         * 6. Parse remaining markdown with marked.js
+         *
+         * Strategy (robust 2-pass approach):
+         * 1. Protect fenced code blocks (``` ... ```) with placeholders
+         * 2. Scan lines and collect contiguous blockquote groups (lines starting with ">")
+         * 3. Within each blockquote group, split on [!TYPE] boundaries to find callouts
+         * 4. Build callout HTML (parsing inner body with marked.js independently)
+         * 5. Replace callouts with placeholders, parse remaining md, then restore
          */
         function parseMarkdown(md) {
-            // Step 1: Protect fenced code blocks by replacing them with placeholders
+            // ── Step 1: Protect fenced code blocks ──
             var codeBlocks = [];
-            var protectedMd = md.replace(/^(```[\s\S]*?^```)/gm, function(match) {
+            var protectedMd = md.replace(/(^|\n)(```[^\n]*\n[\s\S]*?\n```)/g, function(match, prefix, block) {
                 var idx = codeBlocks.length;
-                codeBlocks.push(match);
-                return '%%CODEBLOCK_' + idx + '%%';
+                codeBlocks.push(block);
+                return prefix + '%%CODEBLOCK_' + idx + '%%';
             });
 
-            // Step 2: Extract and process callouts from the raw markdown
-            var calloutPlaceholders = [];
+            // ── Step 2: Parse lines into segments ──
+            // A "segment" is either a blockquote group (contiguous ">" lines) or normal lines.
             var lines = protectedMd.split('\n');
-            var result = [];
+            var segments = []; // each: { type: 'bq' | 'normal', lines: [...] }
             var i = 0;
 
             while (i < lines.length) {
-                // Check if this line starts a callout: > [!TYPE]
-                var calloutMatch = lines[i].match(/^>\s*\[!([\w]+)\](.*)?$/);
-                if (calloutMatch) {
-                    var type = calloutMatch[1].toUpperCase();
-                    var titleText = (calloutMatch[2] || '').trim();
-                    var bodyLines = [];
-
-                    // Collect all subsequent lines that are part of this blockquote
-                    i++;
+                if (/^>/.test(lines[i])) {
+                    // Start of a blockquote group
+                    var bqLines = [];
                     while (i < lines.length) {
-                        // A line belongs to the callout if it starts with ">" 
                         if (/^>/.test(lines[i])) {
-                            // Remove the leading "> " or ">"
-                            bodyLines.push(lines[i].replace(/^>\s?/, ''));
+                            bqLines.push(lines[i]);
                             i++;
                         } else if (lines[i].trim() === '' && i + 1 < lines.length && /^>/.test(lines[i + 1])) {
-                            // Empty line followed by another ">" line - still part of callout
-                            bodyLines.push('');
+                            // Blank line between ">" lines — still part of blockquote group
+                            bqLines.push(lines[i]);
                             i++;
                         } else {
                             break;
                         }
                     }
+                    segments.push({ type: 'bq', lines: bqLines });
+                } else {
+                    segments.push({ type: 'normal', lines: [lines[i]] });
+                    i++;
+                }
+            }
 
-                    // Restore any code block placeholders inside the callout body
-                    var bodyMd = bodyLines.join('\n');
+            // ── Step 3: Process each blockquote group ──
+            // Split blockquote groups on [!TYPE] boundaries into individual callouts.
+            // Any ">" lines before the first [!TYPE] remain as a normal blockquote.
+            var calloutPlaceholders = [];
+            var resultLines = [];
+
+            for (var s = 0; s < segments.length; s++) {
+                var seg = segments[s];
+
+                if (seg.type !== 'bq') {
+                    resultLines.push(seg.lines[0]);
+                    continue;
+                }
+
+                // Split blockquote lines on [!TYPE] boundaries
+                var calloutChunks = []; // each: { type: string|null, title: string, bodyLines: [] }
+                var currentChunk = null;
+
+                for (var j = 0; j < seg.lines.length; j++) {
+                    var line = seg.lines[j];
+                    var cm = line.match(/^>\s*\[!([\w]+)\](.*)?$/);
+
+                    if (cm) {
+                        // Start a new callout chunk
+                        if (currentChunk) {
+                            calloutChunks.push(currentChunk);
+                        }
+                        currentChunk = {
+                            type: cm[1].toUpperCase(),
+                            title: (cm[2] || '').trim(),
+                            bodyLines: []
+                        };
+                    } else if (currentChunk) {
+                        // Part of current callout — strip leading "> " or ">"
+                        if (/^>/.test(line)) {
+                            currentChunk.bodyLines.push(line.replace(/^>\s?/, ''));
+                        } else {
+                            // Blank line inside blockquote group
+                            currentChunk.bodyLines.push('');
+                        }
+                    } else {
+                        // ">" lines before any [!TYPE] — keep as normal blockquote
+                        resultLines.push(line);
+                    }
+                }
+                if (currentChunk) {
+                    calloutChunks.push(currentChunk);
+                }
+
+                // Build callout HTML for each chunk
+                for (var k = 0; k < calloutChunks.length; k++) {
+                    var chunk = calloutChunks[k];
+
+                    // Trim trailing empty lines from body
+                    while (chunk.bodyLines.length > 0 && chunk.bodyLines[chunk.bodyLines.length - 1].trim() === '') {
+                        chunk.bodyLines.pop();
+                    }
+
+                    // Restore code block placeholders inside callout body
+                    var bodyMd = chunk.bodyLines.join('\n');
                     bodyMd = bodyMd.replace(/%%CODEBLOCK_(\d+)%%/g, function(m, idx) {
                         return codeBlocks[parseInt(idx)];
                     });
 
-                    // Parse the callout body as independent markdown
+                    // Parse callout body as independent markdown
                     var bodyHtml = marked.parse(bodyMd, { breaks: true, gfm: true });
 
-                    var calloutType = CALLOUT_TYPE_MAP[type] || 'note';
+                    var calloutType = CALLOUT_TYPE_MAP[chunk.type] || 'note';
                     var icon = CALLOUT_ICON_MAP[calloutType] || '📘';
-                    var displayTitle = titleText || type;
+                    var displayTitle = chunk.title || chunk.type;
 
                     var calloutHtml = '<div class="callout callout-' + calloutType + '">' +
                         '<div class="callout-icon">' + icon + '</div>' +
@@ -826,24 +875,19 @@
 
                     var placeholderIdx = calloutPlaceholders.length;
                     calloutPlaceholders.push(calloutHtml);
-                    result.push('%%CALLOUT_' + placeholderIdx + '%%');
-                } else {
-                    result.push(lines[i]);
-                    i++;
+                    resultLines.push('%%CALLOUT_' + placeholderIdx + '%%');
                 }
             }
 
-            // Step 3: Rejoin and restore code blocks in the remaining markdown
-            var remainingMd = result.join('\n');
+            // ── Step 4: Restore code blocks & parse remaining markdown ──
+            var remainingMd = resultLines.join('\n');
             remainingMd = remainingMd.replace(/%%CODEBLOCK_(\d+)%%/g, function(m, idx) {
                 return codeBlocks[parseInt(idx)];
             });
 
-            // Step 4: Parse the remaining markdown with marked.js
             var html = marked.parse(remainingMd, { breaks: true, gfm: true });
 
-            // Step 5: Restore callout placeholders
-            // They might be wrapped in <p> tags by marked, so handle both cases
+            // ── Step 5: Restore callout placeholders ──
             html = html.replace(/<p>%%CALLOUT_(\d+)%%<\/p>/g, function(m, idx) {
                 return calloutPlaceholders[parseInt(idx)];
             });
