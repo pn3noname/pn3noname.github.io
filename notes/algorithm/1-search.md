@@ -4,7 +4,7 @@ slug: "2-search"
 date: "2026-02-18"
 category: "Algorithm"
 tags: ["Linear Search", "Binary Search", "Two Crystal Balls Problem", "Greedy Algorithm"]
-description: "Understanding Search Algorithms"
+description: "Covers linear search, binary search, and the Two Crystal Balls problem, along with an introduction to greedy algorithms. Includes pseudocode, implementation details, and complexity analysis for each approach."
 ---
 
 source: https://frontendmasters.com/courses/algorithms/binary-search-algorithm/
@@ -25,6 +25,7 @@ source: https://frontendmasters.com/courses/algorithms/binary-search-algorithm/
 ### 2. 현재 요소가 찾는 값인지 확인
 ### 3. 맞다면 해당 위치 반환, 아니면 다음 요소로 이동
 ### 4. 배열 끝까지 반복하며 값을 찾지 못하면 "찾을 수 없음" 반환
+
 
 # 2. Binary Search
 ## 1. 기본 개념
@@ -404,11 +405,12 @@ export default function two_crystal_balls(breaks: boolean[]): number {
 > ];
 > ```
 > ###### 4. 알고리즘 단계별 실행
-> ####### 1. 1단계: 끝나는 시간 순으로 정렬
+> ####### 1. 끝나는 시간 순으로 정렬
 > ```typescript
 > activities.sort((a, b) => a.end - b.end);
 > ```
-> ####### 정렬 후:
+>
+> 정렬 후:
 > ```typescript
 > const activities = [
 > 	{ name: 'A', start: 1, end: 4 }, // 4시 끝
@@ -419,7 +421,7 @@ export default function two_crystal_balls(breaks: boolean[]): number {
 > 	{ name: 'F', start: 5, end: 9 } // 9시 끝
 > ];
 > ```
-> ####### 2. 2단계: 탐욕적 선택 과정
+> ####### 2. 탐욕적 선택 과정
 > ```typescript
 >	function activitySelection(activities) { 
 >		activities.sort((a, b) => a.end - b.end); 
@@ -480,8 +482,5 @@ export default function two_crystal_balls(breaks: boolean[]): number {
 ##### 4. Two Crystal Balls 문제에서 탐욕법을 쓰는 이유는 √n 간격이 수학적으로 최적이라는 것이 증명되어있기 때문
 
 #### 5. 다른 접근법과의 비교
-|접근법|특징|예시|
-|---|---|---|
-|**탐욕법**|현재 최선 선택|거스름돈, 최단경로(다익스트라)|
-|**동적계획법**|모든 경우 고려 후 최적해|배낭문제, 피보나치|
-|**분할정복**|문제를 작게 나누어 해결|병합정렬, 퀵정렬|
+<img width="535" height="145" alt="image" src="https://github.com/user-attachments/assets/6098f89b-294e-4ff4-9008-3030188e221a" />
+
