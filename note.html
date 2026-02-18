@@ -339,6 +339,7 @@
 
         .callout-content {
             flex: 1;
+            min-width: 0;
         }
 
         .callout-title {
@@ -353,6 +354,56 @@
             color: var(--text-secondary);
             font-size: 0.95rem;
             line-height: 1.7;
+        }
+
+        .callout-body h2,
+        .callout-body h3,
+        .callout-body h4,
+        .callout-body h5,
+        .callout-body h6 {
+            color: var(--text-primary);
+        }
+
+        .callout-body pre {
+            background-color: var(--code-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .callout-body pre code {
+            background: none;
+            color: var(--code-text);
+            padding: 0;
+            font-size: 0.875rem;
+        }
+
+        .callout-body code {
+            background-color: rgba(30, 30, 46, 0.08);
+            color: var(--purple);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9em;
+        }
+
+        .callout-body ul,
+        .callout-body ol {
+            margin: 0.5rem 0;
+            padding-left: 1.6rem;
+        }
+
+        .callout-body li {
+            margin-bottom: 0.3rem;
+        }
+
+        .callout-body p {
+            margin-bottom: 0.8rem;
+        }
+
+        .callout-body p:last-child {
+            margin-bottom: 0;
         }
 
         .callout-note {
@@ -658,65 +709,166 @@
             return;
         }
 
+        // Callout type → style mapping
+        const CALLOUT_TYPE_MAP = {
+            'NOTE': 'note',
+            'INFO': 'note',
+            'WARNING': 'warning',
+            'DANGER': 'danger',
+            'TIP': 'tip',
+            'IMPORTANT': 'warning',
+            'CAUTION': 'danger',
+            'ABSTRACT': 'note',
+            'SUMMARY': 'note',
+            'TLDR': 'note',
+            'BUG': 'danger',
+            'EXAMPLE': 'note',
+            'QUOTE': 'note',
+            'SUCCESS': 'tip',
+            'CHECK': 'tip',
+            'DONE': 'tip',
+            'QUESTION': 'warning',
+            'HELP': 'warning',
+            'FAQ': 'warning',
+            'FAILURE': 'danger',
+            'FAIL': 'danger',
+            'MISSING': 'danger',
+        };
+
+        const CALLOUT_ICON_MAP = {
+            'note': '📘',
+            'warning': '⚠️',
+            'danger': '🚫',
+            'tip': '💡'
+        };
+
         function getSlug() {
             const params = new URLSearchParams(window.location.search);
             return params.get('slug');
         }
 
+        /**
+         * Extract Obsidian-style callouts from raw markdown BEFORE passing to marked.js.
+         * 
+         * Callout format in markdown:
+         * > [!TYPE] Optional title
+         * > content line 1
+         * > content line 2
+         * > ...
+         * 
+         * Strategy:
+         * 1. Protect fenced code blocks from being touched
+         * 2. Find callout blocks (lines starting with ">")
+         * 3. Extract type, title, and body
+         * 4. Parse body content with marked.js independently
+         * 5. Replace with callout HTML placeholder
+         * 6. Parse remaining markdown with marked.js
+         */
         function parseMarkdown(md) {
-            // First, use marked.js to parse standard markdown
-            let html = marked.parse(md, {
-                breaks: true,
-                gfm: true
+            // Step 1: Protect fenced code blocks by replacing them with placeholders
+            var codeBlocks = [];
+            var protectedMd = md.replace(/^(```[\s\S]*?^```)/gm, function(match) {
+                var idx = codeBlocks.length;
+                codeBlocks.push(match);
+                return '%%CODEBLOCK_' + idx + '%%';
             });
 
-            // Then process Obsidian callouts in the HTML output
-            html = html.replace(/<blockquote>\s*<p>\[!(NOTE|INFO|WARNING|TIP|IMPORTANT|DANGER)\](.*?)<\/p>([\s\S]*?)<\/blockquote>/gi, function(match, type, title, content) {
-                const typeMap = {
-                    'NOTE': 'note',
-                    'INFO': 'note',
-                    'WARNING': 'warning',
-                    'DANGER': 'danger',
-                    'TIP': 'tip',
-                    'IMPORTANT': 'warning'
-                };
-                const iconMap = {
-                    'note': '📘',
-                    'warning': '⚠️',
-                    'danger': '🚫',
-                    'tip': '💡'
-                };
-                const calloutType = typeMap[type.toUpperCase()] || 'note';
-                const icon = iconMap[calloutType] || '📘';
-                const calloutTitle = title.trim() || type;
-                
-                return `<div class="callout callout-${calloutType}">
-                    <div class="callout-icon">${icon}</div>
-                    <div class="callout-content">
-                        <div class="callout-title">${calloutTitle}</div>
-                        <div class="callout-body">${content}</div>
-                    </div>
-                </div>`;
+            // Step 2: Extract and process callouts from the raw markdown
+            var calloutPlaceholders = [];
+            var lines = protectedMd.split('\n');
+            var result = [];
+            var i = 0;
+
+            while (i < lines.length) {
+                // Check if this line starts a callout: > [!TYPE]
+                var calloutMatch = lines[i].match(/^>\s*\[!([\w]+)\](.*)?$/);
+                if (calloutMatch) {
+                    var type = calloutMatch[1].toUpperCase();
+                    var titleText = (calloutMatch[2] || '').trim();
+                    var bodyLines = [];
+
+                    // Collect all subsequent lines that are part of this blockquote
+                    i++;
+                    while (i < lines.length) {
+                        // A line belongs to the callout if it starts with ">" 
+                        if (/^>/.test(lines[i])) {
+                            // Remove the leading "> " or ">"
+                            bodyLines.push(lines[i].replace(/^>\s?/, ''));
+                            i++;
+                        } else if (lines[i].trim() === '' && i + 1 < lines.length && /^>/.test(lines[i + 1])) {
+                            // Empty line followed by another ">" line - still part of callout
+                            bodyLines.push('');
+                            i++;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    // Restore any code block placeholders inside the callout body
+                    var bodyMd = bodyLines.join('\n');
+                    bodyMd = bodyMd.replace(/%%CODEBLOCK_(\d+)%%/g, function(m, idx) {
+                        return codeBlocks[parseInt(idx)];
+                    });
+
+                    // Parse the callout body as independent markdown
+                    var bodyHtml = marked.parse(bodyMd, { breaks: true, gfm: true });
+
+                    var calloutType = CALLOUT_TYPE_MAP[type] || 'note';
+                    var icon = CALLOUT_ICON_MAP[calloutType] || '📘';
+                    var displayTitle = titleText || type;
+
+                    var calloutHtml = '<div class="callout callout-' + calloutType + '">' +
+                        '<div class="callout-icon">' + icon + '</div>' +
+                        '<div class="callout-content">' +
+                        '<div class="callout-title">' + displayTitle + '</div>' +
+                        '<div class="callout-body">' + bodyHtml + '</div>' +
+                        '</div></div>';
+
+                    var placeholderIdx = calloutPlaceholders.length;
+                    calloutPlaceholders.push(calloutHtml);
+                    result.push('%%CALLOUT_' + placeholderIdx + '%%');
+                } else {
+                    result.push(lines[i]);
+                    i++;
+                }
+            }
+
+            // Step 3: Rejoin and restore code blocks in the remaining markdown
+            var remainingMd = result.join('\n');
+            remainingMd = remainingMd.replace(/%%CODEBLOCK_(\d+)%%/g, function(m, idx) {
+                return codeBlocks[parseInt(idx)];
+            });
+
+            // Step 4: Parse the remaining markdown with marked.js
+            var html = marked.parse(remainingMd, { breaks: true, gfm: true });
+
+            // Step 5: Restore callout placeholders
+            // They might be wrapped in <p> tags by marked, so handle both cases
+            html = html.replace(/<p>%%CALLOUT_(\d+)%%<\/p>/g, function(m, idx) {
+                return calloutPlaceholders[parseInt(idx)];
+            });
+            html = html.replace(/%%CALLOUT_(\d+)%%/g, function(m, idx) {
+                return calloutPlaceholders[parseInt(idx)];
             });
 
             return html;
         }
 
         function buildTOC(content) {
-            const tocList = document.getElementById('tocList');
-            const tempDiv = document.createElement('div');
+            var tocList = document.getElementById('tocList');
+            var tempDiv = document.createElement('div');
             tempDiv.innerHTML = content;
-            const headers = tempDiv.querySelectorAll('h2, h3, h4');
+            var headers = tempDiv.querySelectorAll('h2, h3, h4');
             
             if (headers.length === 0) return;
             
-            headers.forEach((header, idx) => {
-                const level = header.tagName.toLowerCase();
-                const text = header.textContent;
-                const id = 'heading-' + idx;
+            headers.forEach(function(header, idx) {
+                var level = header.tagName.toLowerCase();
+                var text = header.textContent;
+                var id = 'heading-' + idx;
                 header.id = id;
                 
-                const li = document.createElement('li');
+                var li = document.createElement('li');
                 li.className = 'toc-item ' + level;
                 li.innerHTML = '<a href="#' + id + '">' + text + '</a>';
                 tocList.appendChild(li);
@@ -726,13 +878,13 @@
         }
 
         function renderNote() {
-            const slug = getSlug();
+            var slug = getSlug();
             if (!slug) {
                 document.getElementById('articleTitle').textContent = 'No note specified';
                 return;
             }
 
-            const note = notesData.find(n => n.slug === slug);
+            var note = notesData.find(function(n) { return n.slug === slug; });
             if (!note) {
                 document.getElementById('articleTitle').textContent = 'Note not found';
                 document.getElementById('breadcrumbTitle').textContent = slug;
@@ -745,15 +897,15 @@
             document.getElementById('articleTitle').textContent = note.title;
             document.getElementById('articleDate').textContent = note.date || '';
             
-            const tagsDiv = document.getElementById('articleTags');
-            (note.tags || []).forEach(tag => {
-                const span = document.createElement('span');
+            var tagsDiv = document.getElementById('articleTags');
+            (note.tags || []).forEach(function(tag) {
+                var span = document.createElement('span');
                 span.className = 'article-tag';
                 span.textContent = tag;
                 tagsDiv.appendChild(span);
             });
 
-            const parsedContent = parseMarkdown(note.content || '');
+            var parsedContent = parseMarkdown(note.content || '');
             buildTOC(parsedContent);
         }
 
