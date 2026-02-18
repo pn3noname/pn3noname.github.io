@@ -4,7 +4,7 @@ slug: "1-basics"
 date: "2026-02-17"
 category: "Algorithm"
 tags: ["Algorithm", "Big O"]
-description: "알고리즘 기초 개념 정리"
+description: "An introduction to Big O time complexity — how to classify algorithms by their growth rate, why worst-case analysis matters in interviews, and the difference between edge cases and corner cases."
 ---
 
 source: https://frontendmasters.com/courses/algorithms/binary-search-algorithm/
