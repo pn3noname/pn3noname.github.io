@@ -349,6 +349,11 @@
             font-size: 0.875rem;
         }
 
+        /* ══ HIERARCHICAL INDENTATION ══ */
+        .indent-section {
+            padding-left: 1.5rem;
+        }
+
         /* ══ CALLOUTS (Obsidian-style) ══ */
         .callout {
             border-radius: 8px;
@@ -594,7 +599,11 @@
         @media (max-width: 768px) {
             .article-title { font-size: 2rem; }
             .page-container { padding: 0 1rem 4rem 1rem; }
-            
+
+            .indent-section {
+                padding-left: 1rem;
+            }
+
             header nav {
                 padding: 1rem;
             }
@@ -803,16 +812,6 @@
             return params.get('slug');
         }
 
-        /**
-         * Extract Obsidian-style callouts from raw markdown BEFORE passing to marked.js.
-         *
-         * Strategy (robust 2-pass approach):
-         * 1. Protect fenced code blocks (``` ... ```) with placeholders
-         * 2. Scan lines and collect contiguous blockquote groups (lines starting with ">")
-         * 3. Within each blockquote group, split on [!TYPE] boundaries to find callouts
-         * 4. Build callout HTML (parsing inner body with marked.js independently)
-         * 5. Replace callouts with placeholders, parse remaining md, then restore
-         */
         function parseMarkdown(md) {
             // ── Step 1: Protect fenced code blocks ──
             var codeBlocks = [];
@@ -822,22 +821,18 @@
                 return prefix + '%%CODEBLOCK_' + idx + '%%';
             });
 
-            // ── Step 2: Parse lines into segments ──
-            // A "segment" is either a blockquote group (contiguous ">" lines) or normal lines.
             var lines = protectedMd.split('\n');
-            var segments = []; // each: { type: 'bq' | 'normal', lines: [...] }
+            var segments = [];
             var i = 0;
 
             while (i < lines.length) {
                 if (/^>/.test(lines[i])) {
-                    // Start of a blockquote group
                     var bqLines = [];
                     while (i < lines.length) {
                         if (/^>/.test(lines[i])) {
                             bqLines.push(lines[i]);
                             i++;
                         } else if (lines[i].trim() === '' && i + 1 < lines.length && /^>/.test(lines[i + 1])) {
-                            // Blank line between ">" lines — still part of blockquote group
                             bqLines.push(lines[i]);
                             i++;
                         } else {
@@ -851,9 +846,6 @@
                 }
             }
 
-            // ── Step 3: Process each blockquote group ──
-            // Split blockquote groups on [!TYPE] boundaries into individual callouts.
-            // Any ">" lines before the first [!TYPE] remain as a normal blockquote.
             var calloutPlaceholders = [];
             var resultLines = [];
 
@@ -865,8 +857,7 @@
                     continue;
                 }
 
-                // Split blockquote lines on [!TYPE] boundaries
-                var calloutChunks = []; // each: { type: string|null, title: string, bodyLines: [] }
+                var calloutChunks = [];
                 var currentChunk = null;
 
                 for (var j = 0; j < seg.lines.length; j++) {
@@ -874,48 +865,36 @@
                     var cm = line.match(/^>\s*\[!([\w]+)\](.*)?$/);
 
                     if (cm) {
-                        // Start a new callout chunk
-                        if (currentChunk) {
-                            calloutChunks.push(currentChunk);
-                        }
+                        if (currentChunk) calloutChunks.push(currentChunk);
                         currentChunk = {
                             type: cm[1].toUpperCase(),
                             title: (cm[2] || '').trim(),
                             bodyLines: []
                         };
                     } else if (currentChunk) {
-                        // Part of current callout — strip leading "> " or ">"
                         if (/^>/.test(line)) {
                             currentChunk.bodyLines.push(line.replace(/^>\s?/, ''));
                         } else {
-                            // Blank line inside blockquote group
                             currentChunk.bodyLines.push('');
                         }
                     } else {
-                        // ">" lines before any [!TYPE] — keep as normal blockquote
                         resultLines.push(line);
                     }
                 }
-                if (currentChunk) {
-                    calloutChunks.push(currentChunk);
-                }
+                if (currentChunk) calloutChunks.push(currentChunk);
 
-                // Build callout HTML for each chunk
                 for (var k = 0; k < calloutChunks.length; k++) {
                     var chunk = calloutChunks[k];
 
-                    // Trim trailing empty lines from body
                     while (chunk.bodyLines.length > 0 && chunk.bodyLines[chunk.bodyLines.length - 1].trim() === '') {
                         chunk.bodyLines.pop();
                     }
 
-                    // Restore code block placeholders inside callout body
                     var bodyMd = chunk.bodyLines.join('\n');
                     bodyMd = bodyMd.replace(/%%CODEBLOCK_(\d+)%%/g, function(m, idx) {
                         return codeBlocks[parseInt(idx)];
                     });
 
-                    // Parse callout body as independent markdown
                     var bodyHtml = marked.parse(bodyMd, { breaks: true, gfm: true });
 
                     var calloutType = CALLOUT_TYPE_MAP[chunk.type] || 'note';
@@ -935,7 +914,6 @@
                 }
             }
 
-            // ── Step 4: Restore code blocks & parse remaining markdown ──
             var remainingMd = resultLines.join('\n');
             remainingMd = remainingMd.replace(/%%CODEBLOCK_(\d+)%%/g, function(m, idx) {
                 return codeBlocks[parseInt(idx)];
@@ -943,7 +921,6 @@
 
             var html = marked.parse(remainingMd, { breaks: true, gfm: true });
 
-            // ── Step 5: Restore callout placeholders ──
             html = html.replace(/<p>%%CALLOUT_(\d+)%%<\/p>/g, function(m, idx) {
                 return calloutPlaceholders[parseInt(idx)];
             });
@@ -952,6 +929,78 @@
             });
 
             return html;
+        }
+
+        /**
+         * Apply hierarchical indentation to a container element.
+         * 
+         * Scans direct children for headings (h1-h6). Finds the minimum heading level
+         * present ("base level"). For each heading deeper than the base level, wraps
+         * that heading and all following siblings (until a same-or-higher-level heading)
+         * into a div.indent-section, then recurses into that wrapper for deeper levels.
+         *
+         * Result: h2 content under h1 is indented once, h3 under h2 indented twice, etc.
+         */
+        function applyHierarchicalIndent(container) {
+            // Find minimum heading level among direct children
+            var minLevel = 7;
+            var children = container.children;
+            for (var c = 0; c < children.length; c++) {
+                var m = children[c].tagName && children[c].tagName.match(/^H([1-6])$/);
+                if (m) {
+                    var lvl = parseInt(m[1]);
+                    if (lvl < minLevel) minLevel = lvl;
+                }
+            }
+            if (minLevel >= 7) return; // no headings
+
+            // Process: wrap sub-headings (level > minLevel) with their content
+            var i = 0;
+            while (i < container.children.length) {
+                var el = container.children[i];
+                var hm = el.tagName && el.tagName.match(/^H([1-6])$/);
+
+                if (hm) {
+                    var hLevel = parseInt(hm[1]);
+
+                    if (hLevel > minLevel) {
+                        // Create indent wrapper
+                        var wrapper = document.createElement('div');
+                        wrapper.className = 'indent-section';
+
+                        // Insert wrapper before this heading
+                        container.insertBefore(wrapper, el);
+
+                        // Move heading into wrapper
+                        wrapper.appendChild(el);
+
+                        // Move subsequent siblings into wrapper until we hit
+                        // a heading with level <= minLevel (belongs to parent scope)
+                        while (wrapper.nextSibling) {
+                            var next = wrapper.nextSibling;
+
+                            if (next.nodeType === 1 && next.tagName) {
+                                var nextM = next.tagName.match(/^H([1-6])$/);
+                                if (nextM) {
+                                    var nextLevel = parseInt(nextM[1]);
+                                    if (nextLevel <= minLevel) break; // belongs to parent
+                                }
+                            }
+
+                            wrapper.appendChild(next);
+                        }
+
+                        // Recurse into wrapper for deeper nesting
+                        applyHierarchicalIndent(wrapper);
+
+                        // i now points to wrapper, move past it
+                        i++;
+                        continue;
+                    }
+                }
+
+                i++;
+            }
         }
 
         function buildTOC(content) {
@@ -974,7 +1023,17 @@
                 tocList.appendChild(li);
             });
 
-            document.getElementById('articleBody').innerHTML = tempDiv.innerHTML;
+            var articleBody = document.getElementById('articleBody');
+            articleBody.innerHTML = tempDiv.innerHTML;
+
+            // Apply hierarchical indentation to article body
+            applyHierarchicalIndent(articleBody);
+
+            // Also apply to all callout bodies
+            var calloutBodies = articleBody.querySelectorAll('.callout-body');
+            calloutBodies.forEach(function(cb) {
+                applyHierarchicalIndent(cb);
+            });
         }
 
         function renderNote() {
