@@ -433,8 +433,8 @@ export default function two_crystal_balls(breaks: boolean[]): number {
 >	}
 > ```
 > 
-> ![[Pasted image 20250601170931.png]]
-> ![[Pasted image 20250601170954.png]]
+> <img width="425" height="680" alt="image" src="https://github.com/user-attachments/assets/9bb92352-ba34-49e6-8b49-7e396c4fedf4" />
+> <img width="425" height="208" alt="image" src="https://github.com/user-attachments/assets/d581a179-119f-4517-9f38-87b7f942fbf2" />
 > 
 > ```typescript
 > 	// 가장 많은 활동을 선택하기
