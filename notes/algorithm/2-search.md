@@ -433,10 +433,9 @@ export default function two_crystal_balls(breaks: boolean[]): number {
 >	}
 > ```
 > 
-> ```
->  ![[Pasted image 20250601170931.png]]
->  ![[Pasted image 20250601170954.png]]
->  ```
+> ![[Pasted image 20250601170931.png]]
+> ![[Pasted image 20250601170954.png]]
+> 
 > ```typescript
 > 	// 가장 많은 활동을 선택하기
 > 	function activitySelection (activities: {start: number, end: number} [] ) {
