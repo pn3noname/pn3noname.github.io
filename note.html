@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Content-Security-Policy" 
+          content="default-src 'self'; 
+                   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+                   font-src 'self' https://fonts.gstatic.com; 
+                   img-src 'self' data: https://github.com https://user-images.githubusercontent.com https://github.com/user-attachments/; 
+                   script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;">
     <title>pn3noname | Note</title>
     <link rel="icon" type="image/svg+xml" href="Blog_favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,6 +47,7 @@
             color: var(--text-primary);
             line-height: 1.7;
             letter-spacing: -0.01em;
+            overflow-x: hidden;
         }
 
         /* ══ HEADER ══ */
@@ -148,6 +155,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem 6rem 2rem;
+            overflow: hidden;
         }
 
         /* ══ TOP BAR - ABSOLUTE POSITIONING ══ */
@@ -238,6 +246,8 @@
             font-weight: 700;
             margin-bottom: 0.8rem;
             line-height: 1.2;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .article-date {
@@ -270,6 +280,9 @@
             font-size: 1.05rem;
             line-height: 1.8;
             color: var(--text-primary);
+            overflow-wrap: break-word;
+            word-break: break-word;
+            min-width: 0;
         }
 
         .article-body h1 {
@@ -332,6 +345,8 @@
             border-radius: 4px;
             font-family: 'Source Code Pro', monospace;
             font-size: 0.9em;
+            overflow-wrap: break-word;
+            word-break: break-all;
         }
 
         .article-body pre {
@@ -340,6 +355,8 @@
             padding: 1.5rem;
             overflow-x: auto;
             margin: 1.8rem 0;
+            max-width: 100%;
+            -webkit-overflow-scrolling: touch;
         }
 
         .article-body pre code {
@@ -347,6 +364,39 @@
             color: var(--code-text);
             padding: 0;
             font-size: 0.875rem;
+            overflow-wrap: normal;
+            word-break: normal;
+            white-space: pre;
+        }
+
+        /* ══ IMAGES - 반응형 ══ */
+        .article-body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        /* ══ TABLES - 반응형 ══ */
+        .article-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .article-body th,
+        .article-body td {
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border);
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .article-body th {
+            background-color: var(--bg-secondary);
+            font-weight: 600;
         }
 
         /* ══ HIERARCHICAL INDENTATION ══ */
@@ -362,6 +412,8 @@
             border-left: 3px solid;
             display: flex;
             gap: 0.75rem;
+            overflow: hidden;
+            max-width: 100%;
         }
 
         .callout-icon {
@@ -373,6 +425,7 @@
         .callout-content {
             flex: 1;
             min-width: 0;
+            overflow: hidden;
         }
 
         .callout-title {
@@ -387,6 +440,8 @@
             color: var(--text-secondary);
             font-size: 0.95rem;
             line-height: 1.7;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
 
         .callout-body h2,
@@ -431,6 +486,8 @@
             padding: 1.5rem;
             overflow-x: auto;
             margin: 1rem 0;
+            max-width: 100%;
+            -webkit-overflow-scrolling: touch;
         }
 
         .callout-body pre code {
@@ -438,6 +495,9 @@
             color: var(--code-text);
             padding: 0;
             font-size: 0.875rem;
+            overflow-wrap: normal;
+            word-break: normal;
+            white-space: pre;
         }
 
         .callout-body code {
@@ -447,6 +507,8 @@
             border-radius: 4px;
             font-family: 'Source Code Pro', monospace;
             font-size: 0.9em;
+            overflow-wrap: break-word;
+            word-break: break-all;
         }
 
         .callout-body ul,
@@ -465,6 +527,21 @@
 
         .callout-body p:last-child {
             margin-bottom: 0;
+        }
+
+        .callout-body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .callout-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .callout-note {
@@ -647,6 +724,89 @@
             }
 
             .nav-links a::after {
+                display: none;
+            }
+
+            /* 모바일 본문 추가 대응 */
+            .article-body {
+                font-size: 1rem;
+            }
+
+            .article-body h1 {
+                font-size: 1.6rem;
+            }
+
+            .article-body h2 {
+                font-size: 1.4rem;
+            }
+
+            .article-body h3 {
+                font-size: 1.2rem;
+            }
+
+            .article-body h4 {
+                font-size: 1.1rem;
+            }
+
+            .article-body pre {
+                padding: 1rem;
+                border-radius: 8px;
+                font-size: 0.8rem;
+            }
+
+            .article-body pre code {
+                font-size: 0.8rem;
+            }
+
+            .callout {
+                padding: 0.8rem 1rem;
+                gap: 0.5rem;
+            }
+
+            .callout-body {
+                font-size: 0.9rem;
+            }
+
+            .callout-body pre {
+                padding: 1rem;
+                border-radius: 8px;
+            }
+
+            .callout-body pre code {
+                font-size: 0.8rem;
+            }
+
+            .callout-body h2 {
+                font-size: 1.3rem;
+            }
+
+            .callout-body h3 {
+                font-size: 1.15rem;
+            }
+
+            .top-bar {
+                margin: 2rem 0 1.5rem 0;
+            }
+
+            .breadcrumb {
+                font-size: 0.8rem;
+                max-width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            footer {
+                padding: 2rem 1rem;
+            }
+
+            footer p {
+                font-size: 0.85rem;
+                flex-direction: column !important;
+                gap: 0.6rem !important;
+            }
+
+            footer p span[style*="color: var(--border)"] {
                 display: none;
             }
         }
@@ -931,18 +1091,7 @@
             return html;
         }
 
-        /**
-         * Apply hierarchical indentation to a container element.
-         * 
-         * Scans direct children for headings (h1-h6). Finds the minimum heading level
-         * present ("base level"). For each heading deeper than the base level, wraps
-         * that heading and all following siblings (until a same-or-higher-level heading)
-         * into a div.indent-section, then recurses into that wrapper for deeper levels.
-         *
-         * Result: h2 content under h1 is indented once, h3 under h2 indented twice, etc.
-         */
         function applyHierarchicalIndent(container) {
-            // Find minimum heading level among direct children
             var minLevel = 7;
             var children = container.children;
             for (var c = 0; c < children.length; c++) {
@@ -952,9 +1101,8 @@
                     if (lvl < minLevel) minLevel = lvl;
                 }
             }
-            if (minLevel >= 7) return; // no headings
+            if (minLevel >= 7) return;
 
-            // Process: wrap sub-headings (level > minLevel) with their content
             var i = 0;
             while (i < container.children.length) {
                 var el = container.children[i];
@@ -964,18 +1112,11 @@
                     var hLevel = parseInt(hm[1]);
 
                     if (hLevel > minLevel) {
-                        // Create indent wrapper
                         var wrapper = document.createElement('div');
                         wrapper.className = 'indent-section';
-
-                        // Insert wrapper before this heading
                         container.insertBefore(wrapper, el);
-
-                        // Move heading into wrapper
                         wrapper.appendChild(el);
 
-                        // Move subsequent siblings into wrapper until we hit
-                        // a heading with level <= minLevel (belongs to parent scope)
                         while (wrapper.nextSibling) {
                             var next = wrapper.nextSibling;
 
@@ -983,17 +1124,14 @@
                                 var nextM = next.tagName.match(/^H([1-6])$/);
                                 if (nextM) {
                                     var nextLevel = parseInt(nextM[1]);
-                                    if (nextLevel <= minLevel) break; // belongs to parent
+                                    if (nextLevel <= minLevel) break;
                                 }
                             }
 
                             wrapper.appendChild(next);
                         }
 
-                        // Recurse into wrapper for deeper nesting
                         applyHierarchicalIndent(wrapper);
-
-                        // i now points to wrapper, move past it
                         i++;
                         continue;
                     }
@@ -1026,10 +1164,8 @@
             var articleBody = document.getElementById('articleBody');
             articleBody.innerHTML = tempDiv.innerHTML;
 
-            // Apply hierarchical indentation to article body
             applyHierarchicalIndent(articleBody);
 
-            // Also apply to all callout bodies
             var calloutBodies = articleBody.querySelectorAll('.callout-body');
             calloutBodies.forEach(function(cb) {
                 applyHierarchicalIndent(cb);
