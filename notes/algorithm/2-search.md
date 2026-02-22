@@ -3,7 +3,7 @@ title: "Search Algorithms 101"
 slug: "2-search"
 date: "2026-02-18"
 category: "Algorithm"
-tags: ["Linear Search", "Binary Search", "Two Crystal Balls Problem", "Greedy Algorithm"]
+tags: ["Algorithm", "Linear Search", "Binary Search", "Two Crystal Balls Problem", "Greedy Algorithm"]
 description: "Covers linear search, binary search, and the Two Crystal Balls problem, along with an introduction to greedy algorithms. Includes pseudocode, implementation details, and complexity analysis for each approach."
 ---
 
