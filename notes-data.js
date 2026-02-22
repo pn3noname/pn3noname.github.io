@@ -68,6 +68,7 @@ var notesData = [
     "date": "2026-02-18",
     "category": "Algorithm",
     "tags": [
+      "Algorithm",
       "Linear Search",
       "Binary Search",
       "Two Crystal Balls Problem",
