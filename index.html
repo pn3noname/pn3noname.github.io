@@ -321,14 +321,6 @@
             background: linear-gradient(90deg, var(--success) 0%, var(--success-light) 100%);
         }
 
-        .progress-text {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-top: 0.4rem;
-            text-align: right;
-            font-weight: 500;
-        }
-
         /* Section Headers */
         .section-header {
             margin-bottom: 2.5rem;
@@ -1006,7 +998,7 @@
                     return;
                 }
 
-                const preview = notesData.slice(0, 4);
+                const preview = notesData.slice(0, 6);
                 
                 preview.forEach(function(note) {
                     const card = document.createElement('article');
@@ -1044,7 +1036,7 @@
 
             function renderResourcesPreview() {
                 const resourcesPreview = document.getElementById('resourcesPreview');
-                const preview = resourcesData.slice(0, 4);
+                const preview = resourcesData.slice(0, 6);
                 
                 preview.forEach(function(resource) {
                     const card = document.createElement('article');
@@ -1072,7 +1064,7 @@
 
             function renderTagsPreview() {
                 const tagsPreview = document.getElementById('tagsPreview');
-                const preview = tagsData.slice(0, 4);
+                const preview = tagsData.slice(0, 6);
                 
                 const iconMap = {
                     terminal: {
@@ -1130,7 +1122,7 @@
                     return;
                 }
                 
-                const preview = writeupsData.slice(0, 4);
+                const preview = writeupsData.slice(0, 6);
                 preview.forEach(function(writeup) {
                     // Render writeup cards
                 });
