@@ -53,6 +53,7 @@ var notesData = [
     "date": "2026-02-19",
     "category": "Algorithm",
     "tags": [
+      "Algorithm",
       "Bubble Sort",
       "Linked List",
       "Queue",
