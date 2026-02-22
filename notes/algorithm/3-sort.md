@@ -3,7 +3,7 @@ title: "Core Data Structures & Sorting Algorithms"
 slug: "3-sort"
 date: "2026-02-19"
 category: "Algorithm"
-tags: ["Bubble Sort", "Linked List", "Queue", "Stack", "Big O"]
+tags: ["Algorithm", "Bubble Sort", "Linked List", "Queue", "Stack", "Big O"]
 description: "A deep dive into Bubble Sort, Linked Lists, Queues, and Stacks — exploring how pointer manipulation enables O(1) operations, when linked lists outperform arrays, and how these foundational structures power real-world systems like video decoders and call stacks."
 ---
 
