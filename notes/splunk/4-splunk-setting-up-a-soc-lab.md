@@ -93,9 +93,9 @@ source: https://tryhackme.com/room/splunklab
 ## 3. Configuring Forwarder
   - 포워더가 데이터를 올바른 대상으로 전송하도록 구성해야 함
   - Linux host terminal -> `root@coffely:/opt/splunkforwarder/bin# ./splunk add forward-server 10.66.152.135:9997`
+    - 10.66.152.135: 데이터를 받을 Splunk 인덱서(Indexer) 또는 중앙 Splunk 서버
 <img width="627" height="101" alt="image" src="https://github.com/user-attachments/assets/f024ed4b-5226-409c-b821-76da91d6fff7" />
 
-    - 10.66.152.135: 데이터를 받을 Splunk 인덱서(Indexer) 또는 중앙 Splunk 서버
   - 구조
     - Splunk Forwarder (내 컴퓨터 서버에 설치) = 데이터 수집기: 데이터를 "보내는" 역할
     - Splunk Indexer (10.66.152.135) = 중앙 서버: 데이터를 "받는" 역할
@@ -143,6 +143,7 @@ source: https://tryhackme.com/room/splunklab
     - Deployment Server: (Hostname or IP) `127.0.0.1:8089`
     - Receiving Indexer: (Hostname or IP) `127.0.0.1:9997`
   - Forwarder까지 설정이 끝나면 Splunk -> Settings -> Distributed Environment: Forwarder management에서 호스트 세부 정보 확인 가능
+
 <img width="597" height="288" alt="image" src="https://github.com/user-attachments/assets/155fe41b-d4d4-48f0-a5eb-73c81297d7ab" />
 
 ## 2. Ingesting Windows Logs
