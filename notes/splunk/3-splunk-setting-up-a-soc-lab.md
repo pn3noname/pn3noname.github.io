@@ -1,6 +1,6 @@
 ---
 title: "Splunk: Setting up a SOC Lab"
-slug: "4-splunk-setting-up-a-soc-lab"
+slug: "3-splunk-setting-up-a-soc-lab"
 date: "2026-02-23"
 category: "Splunk"
 tags: ["Splunk", "SOC", "Forwarder", "Log Analysis", "Windows Event Logs", "Linux", "Data Ingestion", "Index"]
