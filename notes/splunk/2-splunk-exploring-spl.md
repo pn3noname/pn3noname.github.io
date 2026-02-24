@@ -1,6 +1,6 @@
 ---
 title: "Splunk: Exploring SPL"
-slug: "3-splunk-exploring-spl"
+slug: "2-splunk-exploring-spl"
 date: "2026-02-22"
 category: "Splunk"
 tags: ["Splunk", "SPL", "Filtering", "Transformational Commands", "Chart"]
