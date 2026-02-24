@@ -4,7 +4,7 @@
 
 var notesData = [
   {
-    "slug": "4-splunk-setting-up-a-soc-lab",
+    "slug": "3-splunk-setting-up-a-soc-lab",
     "title": "Splunk: Setting up a SOC Lab",
     "date": "2026-02-23",
     "category": "Splunk",
