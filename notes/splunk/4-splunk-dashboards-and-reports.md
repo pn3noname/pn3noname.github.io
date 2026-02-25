@@ -4,7 +4,7 @@ slug: "4-splunk-dashboards-and-reports"
 date: "2026-02-24"
 category: "Splunk"
 tags: ["Splunk", "SPL", "Dashboard", "Visualization", "Line chart", "SOC", "Log Analysis"]
-description: "A hands-on guide to Splunk's reporting and alerting features — covering how to create recurring search reports, build classic dashboards with visualizations like line charts, and configure alerts for high-priority events such as brute-force login attempts."
+description: "An overview of Splunk's reporting and visualization features — exploring how to reuse saved searches as reports, consolidate multiple results into dashboards with various chart types, and set up alerts that notify analysts the moment a suspicious pattern, such as a brute-force login attempt, is detected."
 ---
 
 source: https://tryhackme.com/room/splunkdashboardsandreports
