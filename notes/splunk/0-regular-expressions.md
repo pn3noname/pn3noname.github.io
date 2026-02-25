@@ -4,7 +4,7 @@ slug: "0-regular-expressions"
 date: "2026-02-20"
 category: "Splunk"
 tags: ["Regex", "Charsets", "Wildcards", "Metacharacters"]
-description: "A practical introduction to regular expressions covering four core concepts — charsets, wildcards, metacharacters with repetition syntax, and grouping with anchors — as a foundation for working with Splunk's search and filtering capabilities."
+description: "A focused introduction to regex fundamentals — from charsets and wildcards to metacharacters, repetition quantifiers, and grouping syntax — teaching how to construct precise text patterns for matching, filtering, and extracting strings across files and log data."
 ---
 
 source: https://tryhackme.com/room/catregex
