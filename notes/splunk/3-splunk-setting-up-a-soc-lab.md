@@ -4,7 +4,7 @@ slug: "3-splunk-setting-up-a-soc-lab"
 date: "2026-02-23"
 category: "Splunk"
 tags: ["Splunk", "SOC", "Forwarder", "Log Analysis", "Windows Event Logs", "Linux", "Data Ingestion", "Index"]
-description: "A practical walkthrough of building a SOC lab with Splunk — covering CLI commands, data ingestion via Universal and Heavy Forwarders, configuring receivers and indexes, forwarding Linux syslog and Windows Event Logs, and verifying end-to-end log pipelines with the logger utility."
+description: "A walkthrough of building a SOC lab with Splunk — covering CLI commands, data ingestion via Universal and Heavy Forwarders, configuring receivers and indexes, forwarding Linux syslog and Windows Event Logs, and verifying end-to-end log pipelines with the logger utility."
 ---
 
 source: https://tryhackme.com/room/splunklab
